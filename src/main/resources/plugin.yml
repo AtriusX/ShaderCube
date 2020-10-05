@@ -1,0 +1,8 @@
+name: Shadercube
+version: @version@
+main: xyz.atrius.shadercube.ShaderCube
+api-version: 1.16
+prefix: ShaderCube
+authors: [Atrius]
+description: Library plugin that enables the creation of in-game particle shaders.
+website: https://atrius.xyz
