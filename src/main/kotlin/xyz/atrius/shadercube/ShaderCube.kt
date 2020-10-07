@@ -1,5 +1,6 @@
 package xyz.atrius.shadercube
 
+import com.destroystokyo.paper.ParticleBuilder
 import org.bukkit.Color
 import org.bukkit.Location
 import org.bukkit.Particle
@@ -36,16 +37,15 @@ class ShaderCube : KotlinPlugin(), Listener {
                     location(position.toVector()
                         .rotateX(angle, 1.0)
                         .rotateY(45.0)
-                        .toLocation(position.world)
                     )
 
                 }
+                
                 particle(Particle.REDSTONE) {
                     color(Color.AQUA)
                     location(position.toVector()
                         .rotateX(angle, 1.0)
                         .rotateY(-45.0)
-                        .toLocation(position.world)
                     )
                 }
 
@@ -54,7 +54,6 @@ class ShaderCube : KotlinPlugin(), Listener {
                     location(position.toVector()
                         .rotateY(angle, 1.0)
                         .rotateX(45.0)
-                        .toLocation(position.world)
                     )
                 }
 
@@ -63,7 +62,6 @@ class ShaderCube : KotlinPlugin(), Listener {
                     location(position.toVector()
                         .rotateY(angle, 1.0)
                         .rotateX(-45.0)
-                        .toLocation(position.world)
                     )
                 }
 
@@ -72,7 +70,6 @@ class ShaderCube : KotlinPlugin(), Listener {
                     location(position.toVector()
                         .rotateY(angle, 1.0)
                         .rotateZ(45.0)
-                        .toLocation(position.world)
                     )
                 }
 
@@ -81,25 +78,25 @@ class ShaderCube : KotlinPlugin(), Listener {
                     location(position.toVector()
                         .rotateY(angle, 1.0)
                         .rotateZ(-45.0)
-                        .toLocation(position.world)
                     )
                 }
                 particle(Particle.REDSTONE) {
                     color(Color.AQUA)
-                    location(position.toVector().rotateZ(angle, 1.0).toLocation(position.world))
+                    location(position.toVector().rotateZ(angle, 1.0))
                 }
                 particle(Particle.REDSTONE) {
                     color(Color.AQUA)
-                    location(position.toVector().rotateX(angle, 1.0).toLocation(position.world))
+                    location(position.toVector().rotateX(angle, 1.0))
                 }
                 particle(Particle.REDSTONE) {
                     color(Color.AQUA)
-                    location(position.toVector().rotateY(angle, 1.0).toLocation(position.world))
+                    location(position.toVector().rotateY(angle, 1.0))
                 }
             }
         }
     }
 }
+
 
 //                val (x, _, z) = size
 //                val lowerX = position.x.toInt() - 4

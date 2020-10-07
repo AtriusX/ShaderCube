@@ -32,6 +32,9 @@ interface Shader {
 
     fun Vector.rotateZ(angle: Double, offset: Double = 0.0, center: Vector = position.toVector()) =
         subtract(center).add(Vector(offset, offset, 0.0)).rotateAroundZ(angle).add(center)
+
+    fun ParticleBuilder.location(vector: Vector) =
+        location(vector.toLocation(position.world))
 }
 
 operator fun Vector.component1() = blockX
