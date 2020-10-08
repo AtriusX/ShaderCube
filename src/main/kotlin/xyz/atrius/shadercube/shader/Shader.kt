@@ -4,6 +4,7 @@ import com.destroystokyo.paper.ParticleBuilder
 import org.bukkit.*
 import org.bukkit.util.Vector
 import xyz.atrius.shadercube.KotlinPlugin
+import kotlin.math.abs
 
 interface Shader {
 
@@ -129,9 +130,10 @@ class Circle(
 }
 
 class Line(
-    p1: Location,
-    p2: Location,
-    vertexes: Int
+    val p1: Location,
+    val p2: Location,
+    val vertexes: Int,
+    private val block: ParticleBuilder.(Line) -> Unit
 ) {
     init {
         val difference = p1.toVector()
@@ -139,7 +141,7 @@ class Line(
             .multiply(-1.0 / vertexes)
         for (i in 1..vertexes)
             particle(Particle.REDSTONE, {
-                color(Color.AQUA, 2f)
+                block(this@Line)
             }, p1.add(difference))
     }
 }

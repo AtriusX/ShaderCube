@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.util.Vector
 import xyz.atrius.shadercube.shader.*
+import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.sin
@@ -34,8 +35,15 @@ class ShaderCube : KotlinPlugin(), Listener {
                 val player = event.player
                 val eyes = player.location
                 val looking = player.getTargetBlock(50)?.location ?: return@update
-                Line(eyes, looking, 100)
-                
+                Line(eyes, looking, 100) {
+                    val p1 = it.p1
+                    color(Color.fromRGB(
+                        abs(p1.blockX) % 255,
+                        abs(p1.blockY) % 255,
+                        abs(p1.blockZ) % 255
+                    ))
+                }
+
 //                position = event.player.location.add(0.0, 1.0, 0.0)
 //                Circle(position, 4.0, 100) {
 //                    color(Color.YELLOW)
