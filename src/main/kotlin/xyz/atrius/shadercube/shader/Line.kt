@@ -23,9 +23,9 @@ class Line(
     init {
         val size = size.clone()
         points.forEachIndexed { i, point ->
-            particle(particle, {
+            particle(particle, point.add(size.add(Vector(i, i, i)))) {
                 block(this@Line)
-            }, point.add(size.add(Vector(i, i, i))))
+            }
         }
     }
 }
