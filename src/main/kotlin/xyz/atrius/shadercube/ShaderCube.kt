@@ -18,17 +18,15 @@ class ShaderCube : KotlinPlugin(), Listener {
 
     override fun onEnable() {
         server.pluginManager.registerEvents(this, this)
-        val module = module {
-            single { this@ShaderCube }
-        }
+        // Send plugin class to dependency injector
         startKoin {
-            modules(module)
+            modules(module { single { this@ShaderCube } })
         }
     }
 
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
-        shader(5) {
+        shader(2) {
             setup {
                 centered = true
             }
@@ -46,7 +44,7 @@ class ShaderCube : KotlinPlugin(), Listener {
 //                }
 
                 point = event.player.location.add(0.0, 1.0, 0.0)
-                Sphere(point, 4.0) { _, _ ->
+                Sphere(point, size = 4.0) { _, _ ->
                     color(Color.YELLOW)
                 }
 //                Circle(point, 4.0, 100) {
