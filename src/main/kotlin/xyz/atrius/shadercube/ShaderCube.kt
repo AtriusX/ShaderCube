@@ -10,6 +10,8 @@ import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.util.Vector
 import xyz.atrius.shadercube.shader.*
+import xyz.atrius.shadercube.shape.Circle
+import xyz.atrius.shadercube.util.radians
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.max
@@ -27,67 +29,70 @@ class ShaderCube : KotlinPlugin(), Listener {
 
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
-        shader(this) {
+        shader(this, 5) {
             setup {
                 centered = true
             }
             update {
-                val player = event.player
-                val eyes = player.location
-                val looking = player.getTargetBlock(50)?.location ?: return@update
-                Line(eyes, looking, 100) {
-                    val p1 = it.p1
-                    color(Color.fromRGB(
-                        abs(p1.blockX) % 255,
-                        abs(p1.blockY) % 255,
-                        abs(p1.blockZ) % 255
-                    ))
-                }
+//                val player = event.player
+//                val eyes = player.location
+//                val looking = player.getTargetBlock(50)?.location ?: return@update
+//                Line(eyes, looking, 100) {
+//                    val p1 = it.p1
+//                    color(Color.fromRGB(
+//                        abs(p1.blockX) % 255,
+//                        abs(p1.blockY) % 255,
+//                        abs(p1.blockZ) % 255
+//                    ))
+//                }
 
-//                position = event.player.location.add(0.0, 1.0, 0.0)
-//                Circle(position, 4.0, 100) {
+                point = event.player.location.add(0.0, 1.0, 0.0)
+                Sphere(point, 4.0) { _, _ ->
+                    color(Color.YELLOW)
+                }
+//                Circle(point, 4.0, 100) {
 //                    color(Color.YELLOW)
 //                }
-//                Circle(position, 4.0, 100) {
+//                Circle(point, 4.0, 100) {
 //                    color(Color.YELLOW)
 //                    location(location()?.toVector()?.rotateX(Math.toRadians(90.0)) ?: return@Circle)
 //                }
-//                Circle(position, 4.0, 100) {
+//                Circle(point, 4.0, 100) {
 //                    color(Color.YELLOW)
 //                    location(location()?.toVector()?.rotateZ(Math.toRadians(90.0)) ?: return@Circle)
 //                }
-//                Circle(position, 4.0, 100) {
+//                Circle(point, 4.0, 100) {
 //                    color(Color.YELLOW)
 //                    location(location()?.toVector()
 //                        ?.rotateZ(Math.toRadians(45.0)
 //                    ) ?: return@Circle)
 //                }
-//                Circle(position, 4.0, 100) {
+//                Circle(point, 4.0, 100) {
 //                    color(Color.YELLOW)
 //                    location(location()?.toVector()
 //                        ?.rotateZ(Math.toRadians(-45.0)
 //                    ) ?: return@Circle)
 //                }
-//                Circle(position, 4.0, 100) {
+//                Circle(point, 4.0, 100) {
 //                    color(Color.YELLOW)
 //                    location(location()?.toVector()
 //                            ?.rotateX(Math.toRadians(45.0)
 //                            ) ?: return@Circle)
 //                }
-//                Circle(position, 4.0, 100) {
+//                Circle(point, 4.0, 100) {
 //                    color(Color.YELLOW)
 //                    location(location()?.toVector()
 //                            ?.rotateX(Math.toRadians(-45.0)
 //                            ) ?: return@Circle)
 //                }
-//                Circle(position, 4.0, 100) {
+//                Circle(point, 4.0, 100) {
 //                    color(Color.YELLOW)
 //                    location(location()?.toVector()
 //                            ?.rotateX(Math.toRadians(90.0))
 //                            ?.rotateY(Math.toRadians(45.0))
 //                            ?: return@Circle)
 //                }
-//                Circle(position, 4.0, 100) {
+//                Circle(point, 4.0, 100) {
 //                    color(Color.YELLOW)
 //                    location(location()?.toVector()
 //                            ?.rotateX(Math.toRadians(90.0))
