@@ -9,6 +9,7 @@ import xyz.atrius.shadercube.shape.Shape
 class Line(
     override var point   : Location,
                  point2  : Location,
+    override var particle: Particle                       = Particle.REDSTONE,
                  vertexes: Int                            = 100,
     private  val block   : ParticleBuilder.(Line) -> Unit = {}
 ) : Shape {
@@ -22,7 +23,7 @@ class Line(
     init {
         val size = size.clone()
         points.forEachIndexed { i, point ->
-            particle(Particle.REDSTONE, {
+            particle(particle, {
                 block(this@Line)
             }, point.add(size.add(Vector(i, i, i))))
         }
