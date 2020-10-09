@@ -1,12 +1,9 @@
 package xyz.atrius.shadercube.shader
 
-import com.destroystokyo.paper.ParticleBuilder
-import org.bukkit.*
-import org.bukkit.util.Vector
-import xyz.atrius.shadercube.KotlinPlugin
+import org.bukkit.Location
 import xyz.atrius.shadercube.Spatial
+import xyz.atrius.shadercube.util.plugin
 import xyz.atrius.shadercube.util.schedule
-import kotlin.math.abs
 
 class Shader : Spatial {
 
@@ -30,7 +27,7 @@ class Shader : Spatial {
     }
 }
 
-fun shader(plugin: KotlinPlugin, rate: Long = 1, shader: Shader.() -> Unit) = Shader().apply {
+fun shader(rate: Long = 1, shader: Shader.() -> Unit) = Shader().apply {
     // Construct the shader script
     shader(this)
     // Run the setup script

@@ -1,21 +1,14 @@
 package xyz.atrius.shadercube
 
-import com.destroystokyo.paper.ParticleBuilder
 import org.bukkit.Color
-import org.bukkit.Location
-import org.bukkit.Particle
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
-import org.bukkit.util.Vector
-import xyz.atrius.shadercube.shader.*
-import xyz.atrius.shadercube.shape.Circle
-import xyz.atrius.shadercube.util.radians
-import kotlin.math.abs
-import kotlin.math.cos
-import kotlin.math.max
-import kotlin.math.sin
+import org.koin.core.context.startKoin
+import org.koin.dsl.module
+import xyz.atrius.shadercube.shader.Sphere
+import xyz.atrius.shadercube.shader.shader
 
 typealias KotlinPlugin =
     JavaPlugin
@@ -25,11 +18,17 @@ class ShaderCube : KotlinPlugin(), Listener {
 
     override fun onEnable() {
         server.pluginManager.registerEvents(this, this)
+        val module = module {
+            single { this@ShaderCube }
+        }
+        startKoin {
+            modules(module)
+        }
     }
 
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
-        shader(this, 5) {
+        shader(5) {
             setup {
                 centered = true
             }
