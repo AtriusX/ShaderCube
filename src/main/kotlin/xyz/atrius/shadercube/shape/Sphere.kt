@@ -1,11 +1,9 @@
-package xyz.atrius.shadercube.shader
+package xyz.atrius.shadercube.shape
 
 import com.destroystokyo.paper.ParticleBuilder
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.util.Vector
-import xyz.atrius.shadercube.shape.Circle
-import xyz.atrius.shadercube.shape.Shape
 import xyz.atrius.shadercube.util.radians
 
 class Sphere(

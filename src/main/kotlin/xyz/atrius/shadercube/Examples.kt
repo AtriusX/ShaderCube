@@ -4,8 +4,8 @@ import org.bukkit.Color
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.entity.Player
-import xyz.atrius.shadercube.shader.Line
-import xyz.atrius.shadercube.shader.Sphere
+import xyz.atrius.shadercube.shape.Line
+import xyz.atrius.shadercube.shape.Sphere
 import xyz.atrius.shadercube.shader.Update
 import xyz.atrius.shadercube.shape.Circle
 import xyz.atrius.shadercube.util.component1
