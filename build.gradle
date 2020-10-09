@@ -15,6 +15,7 @@ targetCompatibility = '1.8'
 
 repositories {
     mavenCentral()
+    jcenter()
     maven {
         name = 'papermc-repo'
         url = 'https://papermc.io/repo/repository/maven-public/'
@@ -25,9 +26,12 @@ repositories {
     }
 }
 
+def koin_version = '2.1.6'
+
 dependencies {
     compileOnly 'com.destroystokyo.paper:paper-api:1.16.3-R0.1-SNAPSHOT'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    implementation "org.koin:koin-core:$koin_version"
 }
 
 processResources {
