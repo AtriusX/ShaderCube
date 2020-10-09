@@ -6,14 +6,14 @@ import org.bukkit.Particle
 import org.bukkit.entity.Player
 import xyz.atrius.shadercube.shader.Line
 import xyz.atrius.shadercube.shader.Sphere
-import xyz.atrius.shadercube.shader.shader
+import xyz.atrius.shadercube.shader.Update
 import xyz.atrius.shadercube.shape.Circle
 import xyz.atrius.shadercube.util.component1
 import xyz.atrius.shadercube.util.component2
 import xyz.atrius.shadercube.util.component3
 import kotlin.math.abs
 
-fun orbit(point: Location) = shader {
+fun orbit(point: Location): Update = {
     update {
         val angle = (time / 500.0) % 360
         particle(Particle.REDSTONE) {
@@ -74,7 +74,7 @@ fun orbit(point: Location) = shader {
     }
 }
 
-fun rayCast(player: Player) = shader {
+fun rayCast(player: Player): Update = {
     update {
         val eyes = player.location
         val looking = player.getTargetBlock(50)?.location ?: return@update
@@ -87,7 +87,7 @@ fun rayCast(player: Player) = shader {
     }
 }
 
-fun sphere(point: Location) = shader {
+fun sphere(point: Location): Update = {
     update {
         Sphere(point, size = 4.0) { _, _ ->
             color(Color.YELLOW)
@@ -95,65 +95,63 @@ fun sphere(point: Location) = shader {
     }
 }
 
-fun globe(point: Location) = shader {
-    update {
-        Circle(point, size = 4.0, vertexes =  100) { _, _ ->
-            color(Color.YELLOW)
-        }
-        Circle(point, size = 4.0, vertexes =  100) { _, _ ->
-            color(Color.YELLOW)
-            location(location()?.toVector()
-                ?.rotateX(Math.toRadians(90.0))
-                ?: return@Circle)
-        }
-        Circle(point, size = 4.0, vertexes =  100) { _, _ ->
-            color(Color.YELLOW)
-            location(location()?.toVector()
-                ?.rotateZ(Math.toRadians(90.0))
-                ?: return@Circle)
-        }
-        Circle(point, size = 4.0, vertexes =  100) { _, _ ->
-            color(Color.YELLOW)
-            location(location()?.toVector()
-                ?.rotateZ(Math.toRadians(45.0))
-                ?: return@Circle)
-        }
-        Circle(point, size = 4.0, vertexes =  100) { _, _ ->
-            color(Color.YELLOW)
-            location(location()?.toVector()
-                ?.rotateZ(Math.toRadians(-45.0))
-                ?: return@Circle)
-        }
-        Circle(point, size = 4.0, vertexes =  100) { _, _ ->
-            color(Color.YELLOW)
-            location(location()?.toVector()
-                ?.rotateX(Math.toRadians(45.0))
-                ?: return@Circle)
-        }
-        Circle(point, size = 4.0, vertexes =  100) { _, _ ->
-            color(Color.YELLOW)
-            location(location()?.toVector()
-                ?.rotateX(Math.toRadians(-45.0))
-                ?: return@Circle)
-        }
-        Circle(point, size = 4.0, vertexes =  100) { _, _ ->
-            color(Color.YELLOW)
-            location(location()?.toVector()
-                ?.rotateX(Math.toRadians(90.0))
-                ?.rotateY(Math.toRadians(45.0))
-                ?: return@Circle)
-        }
-        Circle(point, size = 4.0, vertexes =  100) { _, _ ->
-            color(Color.YELLOW)
-            location(location()?.toVector()
-                ?.rotateX(Math.toRadians(90.0))
-                ?.rotateY(Math.toRadians(-45.0))
-                ?: return@Circle)
-        }
+fun globe(point: Location): Update = {
+    Circle(point, size = 4.0, vertexes =  100) { _, _ ->
+        color(Color.YELLOW)
+    }
+    Circle(point, size = 4.0, vertexes =  100) { _, _ ->
+        color(Color.YELLOW)
+        location(location()?.toVector()
+            ?.rotateX(Math.toRadians(90.0))
+            ?: return@Circle)
+    }
+    Circle(point, size = 4.0, vertexes =  100) { _, _ ->
+        color(Color.YELLOW)
+        location(location()?.toVector()
+            ?.rotateZ(Math.toRadians(90.0))
+            ?: return@Circle)
+    }
+    Circle(point, size = 4.0, vertexes =  100) { _, _ ->
+        color(Color.YELLOW)
+        location(location()?.toVector()
+            ?.rotateZ(Math.toRadians(45.0))
+            ?: return@Circle)
+    }
+    Circle(point, size = 4.0, vertexes =  100) { _, _ ->
+        color(Color.YELLOW)
+        location(location()?.toVector()
+            ?.rotateZ(Math.toRadians(-45.0))
+            ?: return@Circle)
+    }
+    Circle(point, size = 4.0, vertexes =  100) { _, _ ->
+        color(Color.YELLOW)
+        location(location()?.toVector()
+            ?.rotateX(Math.toRadians(45.0))
+            ?: return@Circle)
+    }
+    Circle(point, size = 4.0, vertexes =  100) { _, _ ->
+        color(Color.YELLOW)
+        location(location()?.toVector()
+            ?.rotateX(Math.toRadians(-45.0))
+            ?: return@Circle)
+    }
+    Circle(point, size = 4.0, vertexes =  100) { _, _ ->
+        color(Color.YELLOW)
+        location(location()?.toVector()
+            ?.rotateX(Math.toRadians(90.0))
+            ?.rotateY(Math.toRadians(45.0))
+            ?: return@Circle)
+    }
+    Circle(point, size = 4.0, vertexes =  100) { _, _ ->
+        color(Color.YELLOW)
+        location(location()?.toVector()
+            ?.rotateX(Math.toRadians(90.0))
+            ?.rotateY(Math.toRadians(-45.0))
+            ?: return@Circle)
     }
 }
 
-fun dynamo(point: Location) = shader {
+fun dynamo(point: Location): Update = {
     update {
         Circle(point, size = 2.0, vertexes =  50) { _, _ ->
             val loc = location()?.toVector() ?: return@Circle

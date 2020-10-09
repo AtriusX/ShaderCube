@@ -27,7 +27,7 @@ class ShaderCube : KotlinPlugin(), Listener {
         shader(2) {
             update {
                 point = event.player.location.add(0.0, 1.0, 0.0)
-                globe(point)
+                run(globe(point))
             }
         }
     }

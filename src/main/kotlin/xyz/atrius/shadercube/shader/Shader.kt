@@ -5,6 +5,12 @@ import xyz.atrius.shadercube.Spatial
 import xyz.atrius.shadercube.util.plugin
 import xyz.atrius.shadercube.util.schedule
 
+typealias Setup =
+    Shader.() -> Unit
+
+typealias Update =
+    Shader.() -> Unit
+
 class Shader : Spatial {
 
     override lateinit var point: Location
