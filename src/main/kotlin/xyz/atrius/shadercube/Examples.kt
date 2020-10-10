@@ -4,10 +4,10 @@ import org.bukkit.Color
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.entity.Player
-import xyz.atrius.shadercube.shape.Line
-import xyz.atrius.shadercube.shape.Sphere
 import xyz.atrius.shadercube.shader.Update
 import xyz.atrius.shadercube.shape.Circle
+import xyz.atrius.shadercube.shape.Line
+import xyz.atrius.shadercube.shape.Sphere
 import xyz.atrius.shadercube.util.component1
 import xyz.atrius.shadercube.util.component2
 import xyz.atrius.shadercube.util.component3
@@ -78,8 +78,8 @@ fun rayCast(player: Player): Update = {
     update {
         val eyes = player.location
         val looking = player.getTargetBlock(50)?.location ?: return@update
-        Line(eyes, looking, vertexes = 100) {
-            val (x, y, z) = it.point.toVector()
+        Line(eyes, looking, vertexes = 100) { l, _ ->
+            val (x, y, z) = l.point.toVector()
             color(Color.fromRGB(
                 abs(x) % 255, abs(y) % 255, abs(z) % 255
             ))

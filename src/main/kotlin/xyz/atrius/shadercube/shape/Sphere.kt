@@ -1,6 +1,5 @@
 package xyz.atrius.shadercube.shape
 
-import com.destroystokyo.paper.ParticleBuilder
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.util.Vector
@@ -8,19 +7,19 @@ import xyz.atrius.shadercube.util.radians
 
 class Sphere(
     override var point   : Location,
-    override var particle: Particle                                 = Particle.REDSTONE,
-                 size    : Double                                   = 1.0,
-                 rings   : Int                                      = 16,
-                 segments: Int                                      = 32,
-                 block   : ParticleBuilder.(Sphere, Vector) -> Unit = { _, _ -> }
-) : Shape {
+    override var particle: Particle      = Particle.REDSTONE,
+                 size    : Double        = 1.0,
+                 rings   : Int           = 16,
+                 segments: Int           = 32,
+    override val block   : Style<Sphere> = { _, _ -> }
+) : Shape<Sphere> {
 
     constructor(
-            point   : Location,
-            particle: Particle,
-            size    : Double,
-            vertexes: Int,
-            block   : ParticleBuilder.(Sphere, Vector) -> Unit = { _, _ -> }
+        point   : Location,
+        particle: Particle      = Particle.REDSTONE,
+        size    : Double,
+        vertexes: Int,
+        block   : Style<Sphere> = { _, _ -> }
     ) : this(point, particle, size, vertexes, vertexes, block)
 
     override val size  : Vector        = Vector(size, size, size)
