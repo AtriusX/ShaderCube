@@ -12,11 +12,7 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import xyz.atrius.shadercube.shader.Shader
 import xyz.atrius.shadercube.shader.shader
-import xyz.atrius.shadercube.shape.Circle
-import xyz.atrius.shadercube.shape.Sphere
-import xyz.atrius.shadercube.shape.Square
-import xyz.atrius.shadercube.util.radians
-import kotlin.math.sin
+import xyz.atrius.shadercube.shape.Cube
 
 typealias KotlinPlugin =
     JavaPlugin
@@ -24,7 +20,7 @@ typealias KotlinPlugin =
 @Suppress("unused")
 class ShaderCube : KotlinPlugin(), Listener {
 
-    val players = hashMapOf<Player, Shader>()
+    private val players = hashMapOf<Player, Shader>()
 
     override fun onEnable() {
         server.pluginManager.registerEvents(this, this)
@@ -38,26 +34,23 @@ class ShaderCube : KotlinPlugin(), Listener {
     fun onJoin(event: PlayerJoinEvent) {
         players[event.player] = shader {
             update {
-                point = event.player.location
-                Square(point, size = Vector(6.0, 0.0, 6.0)) { _, v ->
-                    location(v.rotateY(time / 1500.0))
-                    color(Color.YELLOW)
+                point = event.player.location.add(0.0, 1.0, 0.0)
+                val angle = time / 7500.0
+                Cube(point, size = Vector(3.0, 3.0, 3.0), step = 3) { _, v ->
+                    location(v.rotateX(angle * 2).rotateY(angle).rotateZ(-angle * 3))
+                    color(Color.YELLOW, 0.5f)
                 }
-                Square(point, size = Vector(6.0, 0.0, 6.0)) { _, v ->
-                    location(v.rotateY(45.radians + time / 1500.0))
-                    color(Color.AQUA)
+                Cube(point, size = Vector(3.0, 3.0, 3.0), step = 3) { _, v ->
+                    location(v.rotateX(angle * 3).rotateY(-angle * 2).rotateZ(angle))
+                    color(Color.AQUA, 0.5f)
                 }
-                Sphere(point, size = 1.5, vertexes = 12) { _, v ->
-                    location(v
-                        .rotateX(time / 300.0)
-                        .rotateZ(time / 250.0)
-                        .add(Vector(0.0, 1.0, 0.0))
-                    )
-                    color(Color.RED)
+                Cube(point, size = Vector(3.0, 3.0, 3.0), step = 3) { _, v ->
+                    location(v.rotateX(-angle * 2).rotateY(angle).rotateZ(-angle * 1.5))
+                    color(Color.RED, 0.5f)
                 }
-                Circle(point, size = sin(time / 500.0) * 10, vertexes = 8) { _, v ->
-                    location(v.rotateY(time / 1000.0))
-                    color(Color.PURPLE, 5f)
+                Cube(point, size = Vector(3.0, 3.0, 3.0), step = 3) { _, v ->
+                    location(v.rotateX(-angle * 3).rotateY(-angle * 1.5).rotateZ(angle))
+                    color(Color.LIME, 0.5f)
                 }
             }
         }
