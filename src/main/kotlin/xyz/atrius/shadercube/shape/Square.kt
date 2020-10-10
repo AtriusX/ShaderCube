@@ -3,11 +3,12 @@ package xyz.atrius.shadercube.shape
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.util.Vector
+import xyz.atrius.shadercube.util.vec2d
 
 class Square(
     override var point   : Location,
     override var particle: Particle      = Particle.REDSTONE,
-    override val size    : Vector        = Vector(1.0, 0.0, 1.0),
+    override val size    : Vector        = 1.vec2d,
                  step    : Int           = 5,
                  hollow  : Boolean       = true,
                  center  : Boolean       = true,

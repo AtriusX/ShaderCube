@@ -4,6 +4,7 @@ import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.util.Vector
 import xyz.atrius.shadercube.util.radians
+import xyz.atrius.shadercube.util.vec
 
 class Sphere(
     override var point   : Location,
@@ -22,7 +23,7 @@ class Sphere(
         block   : Style<Sphere> = { _, _ -> }
     ) : this(point, particle, size, vertexes, vertexes, block)
 
-    override val size  : Vector        = Vector(size, size, size)
+    override val size  : Vector        = size.vec
     override val points: Array<Vector> = Array(segments * rings) { point.toVector() }
 
     init {

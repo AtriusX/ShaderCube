@@ -4,6 +4,7 @@ import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.util.Vector
 import xyz.atrius.shadercube.util.radians
+import xyz.atrius.shadercube.util.vec2d
 
 class Circle(
     override var point   : Location,
@@ -12,7 +13,7 @@ class Circle(
                  vertexes: Int           = 32,
     override val block   : Style<Circle> = { _, _ -> }
 ) : Shape<Circle> {
-    override val size  : Vector = Vector(0.0, size, 0.0)
+    override val size  : Vector = size.vec2d
     override val points: Array<Vector> = Array(vertexes) { center.toVector() }
 
     init {
