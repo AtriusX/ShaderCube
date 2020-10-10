@@ -24,7 +24,7 @@ class Cube(
         val p = point.clone()
         if (center) p.subtract(0.0, h / 2.0, 0.0)
         for (y in 0..hSize) Square(
-            p, particle, size, step, hollow, center, y !in listOf(0, hSize)
+            p, particle, size, step, if (y in listOf(0, hSize)) hollow else true, center, y !in listOf(0, hSize) && hollow
         ) { s, v ->
             block(s, v)
         }.also {
