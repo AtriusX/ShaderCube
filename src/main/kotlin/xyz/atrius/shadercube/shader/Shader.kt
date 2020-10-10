@@ -36,7 +36,7 @@ class Shader : Spatial {
         schedule.cancelTask(taskId)
 }
 
-fun shader(rate: Long = 1, shader: Shader.() -> Unit) = Shader().apply {
+fun shader(rate: Long = 0, shader: Shader.() -> Unit) = Shader().apply {
     // Construct the shader script
     shader(this)
     // Run the setup script
