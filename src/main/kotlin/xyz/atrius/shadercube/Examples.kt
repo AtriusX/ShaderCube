@@ -4,14 +4,18 @@ import org.bukkit.Color
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.entity.Player
+import org.bukkit.util.Vector
 import xyz.atrius.shadercube.shader.Update
 import xyz.atrius.shadercube.shape.Circle
 import xyz.atrius.shadercube.shape.Line
 import xyz.atrius.shadercube.shape.Sphere
+import xyz.atrius.shadercube.shape.Square
 import xyz.atrius.shadercube.util.component1
 import xyz.atrius.shadercube.util.component2
 import xyz.atrius.shadercube.util.component3
+import xyz.atrius.shadercube.util.radians
 import kotlin.math.abs
+import kotlin.math.sin
 
 fun orbit(point: Location): Update = {
     update {
@@ -162,5 +166,28 @@ fun dynamo(point: Location): Update = {
             ))
             location(loc.rotateX(angle).rotateY(angle * 2).rotateZ(angle * 3))
         }
+    }
+}
+
+fun flower(point: Location): Update = {
+    Square(point, size = Vector(6.0 + sin(time / 1250.0) * 3, 0.0, 6.0)) { _, v ->
+        location(v.rotateY(time / 1500.0))
+        color(Color.YELLOW)
+    }
+    Square(point, size = Vector(6.0, 0.0, 6.0 + sin(time / 1500.0) * 3)) { _, v ->
+        location(v.rotateY(45.radians + time / 1500.0 + sin(time / 3000.0)))
+        color(Color.AQUA)
+    }
+    Sphere(point, size = 1.5, vertexes = 12) { _, v ->
+        location(v
+                .rotateX(time / 300.0)
+                .rotateZ(time / 250.0)
+                .add(Vector(0.0, 1.0, 0.0))
+        )
+        color(Color.RED)
+    }
+    Circle(point, size = sin(time / 500.0) * 10, vertexes = 8) { _, v ->
+        location(v.rotateY(time / 1000.0).add(Vector(0.0, abs(sin(time / 500.0)) * 3, 0.0)))
+        color(Color.FUCHSIA, 5f)
     }
 }
