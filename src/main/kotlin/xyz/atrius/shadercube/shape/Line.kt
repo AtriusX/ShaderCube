@@ -3,6 +3,7 @@ package xyz.atrius.shadercube.shape
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.util.Vector
+import xyz.atrius.shadercube.util.vec
 
 class Line(
     override var point   : Location,
@@ -16,14 +17,20 @@ class Line(
         .subtract(point2.toVector())
         .multiply(-1.0 / vertexes)
 
+    val midpoint: Vector = point.toVector()
+        .subtract(point2.toVector())
+        .divide((-2).vec)
+
     override val points: Array<Vector> = Array(vertexes) { point.toVector() }
 
     init {
-        val size = size.clone()
-        points.forEachIndexed { i, point ->
-            particle(particle, point.add(size.add(Vector(i, i, i)))) {
-                block(this@Line, point)
+        val pos = point
+        for (i in points.indices) {
+            points[i] = pos.toVector()
+            particle(particle, pos.toVector()) {
+                block(this@Line, point.toVector())
             }
+            pos.add(size)
         }
     }
 }
