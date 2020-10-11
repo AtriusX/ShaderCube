@@ -7,12 +7,12 @@ import xyz.atrius.shadercube.util.radians
 import xyz.atrius.shadercube.util.vec2d
 
 class Polygon(
-        override var point   : Location,
-        override var particle: Particle,
-                     size    : Double = 1.0,
-                     faces   : Int    = 3,
-                     vertexes: Int    = 25,
-        override val block   : Style<Polygon>
+    override var point   : Location,
+    override var particle: Particle       = Particle.REDSTONE,
+                 size    : Double         = 1.0,
+                 faces   : Int            = 3,
+                 vertexes: Int            = 25,
+    override val block   : Style<Polygon> = { _, _ -> }
 ) : Shape<Polygon> {
     override val size: Vector = size.vec2d
     override val points: Array<Vector> = Array(faces) { point.toVector() }

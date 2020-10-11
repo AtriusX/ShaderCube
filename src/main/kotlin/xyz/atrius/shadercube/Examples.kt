@@ -205,3 +205,22 @@ fun cubes(point: Location): Update = {
         color(Color.LIME, 0.5f)
     }
 }
+
+fun floorMarkings(point: Location): Update = {
+    Polygon(point, Particle.REDSTONE, 3.0) { p, v ->
+        location(v.rotateY(time / 1500.0))
+        color(Color.YELLOW, 0.5f)
+    }
+    Polygon(point, Particle.REDSTONE, 3.0) { _, v ->
+        location(v.rotateY(40.radians + time / 1500.0))
+        color(Color.AQUA, 0.5f)
+    }
+    Polygon(point, Particle.REDSTONE, 3.0) { _, v ->
+        location(v.rotateY(80.radians + time / 1500.0))
+        color(Color.RED, 0.5f)
+    }
+    Polygon(point, Particle.REDSTONE, 1.0, 6) { _, v ->
+        location(v.rotateY(time / 1500.0))
+        color(Color.LIME, 0.5f)
+    }
+}
