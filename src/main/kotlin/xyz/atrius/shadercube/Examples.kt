@@ -6,14 +6,8 @@ import org.bukkit.Particle
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 import xyz.atrius.shadercube.shader.Update
-import xyz.atrius.shadercube.shape.Circle
-import xyz.atrius.shadercube.shape.Line
-import xyz.atrius.shadercube.shape.Sphere
-import xyz.atrius.shadercube.shape.Square
-import xyz.atrius.shadercube.util.component1
-import xyz.atrius.shadercube.util.component2
-import xyz.atrius.shadercube.util.component3
-import xyz.atrius.shadercube.util.radians
+import xyz.atrius.shadercube.shape.*
+import xyz.atrius.shadercube.util.*
 import kotlin.math.abs
 import kotlin.math.sin
 
@@ -189,5 +183,25 @@ fun flower(point: Location): Update = {
     Circle(point, size = sin(time / 500.0) * 10, vertexes = 8) { _, v ->
         location(v.rotateY(time / 1000.0).add(Vector(0.0, abs(sin(time / 500.0)) * 3, 0.0)))
         color(Color.FUCHSIA, 5f)
+    }
+}
+
+fun cubes(point: Location): Update = {
+    val angle = time / 7500.0
+    Cube(point, size = 3.vec, step = 3) { _, v ->
+        location(v.rotateX(angle * 2).rotateY(angle).rotateZ(-angle * 3))
+        color(Color.YELLOW, 0.5f)
+    }
+    Cube(point, size = 3.vec, step = 3) { _, v ->
+        location(v.rotateX(angle * 3).rotateY(-angle * 2).rotateZ(angle))
+        color(Color.AQUA, 0.5f)
+    }
+    Cube(point, size = 3.vec, step = 3) { _, v ->
+        location(v.rotateX(-angle * 2).rotateY(angle).rotateZ(-angle * 1.5))
+        color(Color.RED, 0.5f)
+    }
+    Cube(point, size = 3.vec, step = 3) { _, v ->
+        location(v.rotateX(-angle * 3).rotateY(-angle * 1.5).rotateZ(angle))
+        color(Color.LIME, 0.5f)
     }
 }
