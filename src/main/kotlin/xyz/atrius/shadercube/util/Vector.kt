@@ -1,12 +1,17 @@
 package xyz.atrius.shadercube.util
 
 import org.bukkit.util.Vector
+import kotlin.math.sign
 
 operator fun Vector.component1() = blockX
 
 operator fun Vector.component2() = blockY
 
 operator fun Vector.component3() = blockZ
+
+private fun Vector.signs(): Vector {
+    return Vector(x.sign, y.sign, z.sign)
+}
 
 val Double.vec: Vector
     get() = Vector(this, this, this)
