@@ -9,6 +9,7 @@ import xyz.atrius.shadercube.shader.Update
 import xyz.atrius.shadercube.shape.*
 import xyz.atrius.shadercube.util.*
 import kotlin.math.abs
+import kotlin.math.cos
 import kotlin.math.sin
 
 fun orbit(point: Location): Update = {
@@ -222,5 +223,22 @@ fun floorMarkings(point: Location): Update = {
     Polygon(point, Particle.REDSTONE, 1.0, 6) { _, v ->
         location(v.rotateY(time / 1500.0))
         color(Color.LIME, 0.5f)
+    }
+}
+
+fun e(point: Location): Update = {
+    val data = hashMapOf(
+            Color.YELLOW to 0,
+            Color.AQUA to 90,
+            Color.LIME to 180,
+            Color.RED to 270
+    )
+    data.forEach { (c, a) ->
+        Triangle(point, Particle.REDSTONE,
+            2 + abs(sin(time / 1000.0) * 10), 2 + abs(sin(time / 1500.0) * 6), sin(time / 3000.0) * 3
+        ) { _, v ->
+            location(v.rotateY(a.radians + cos(time / 2500.0)))
+            color(c)
+        }
     }
 }
