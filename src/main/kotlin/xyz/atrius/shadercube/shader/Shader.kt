@@ -36,9 +36,9 @@ class Shader : Spatial {
 fun shader(rate: Long = 0, shader: Shader.() -> Unit) = Shader().apply {
     shader(this)        // Construct the shader script
     if (update != null) // Setup update loop
-    taskId = schedule.scheduleSyncRepeatingTask(plugin, {
-        if (cancel())
-            schedule.cancelTask(taskId)
-        update?.invoke()
-    }, 0L, rate)
+        taskId = schedule.scheduleSyncRepeatingTask(plugin, {
+            if (cancel())
+                schedule.cancelTask(taskId)
+            update?.invoke()
+        }, 0L, rate)
 }

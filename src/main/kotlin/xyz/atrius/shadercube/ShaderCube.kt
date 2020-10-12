@@ -31,12 +31,20 @@ class ShaderCube : KotlinPlugin(), Listener {
         }
     }
 
+    private var start = Long.MAX_VALUE
+
     @EventHandler
     fun onJoin(event: PlayerMoveEvent) {
         val player = event.player
         if (!player.isGliding) {
+            start = Long.MAX_VALUE
             return
         }
+        val launch = System.currentTimeMillis()
+        if (start > launch)
+            start = launch
+        if (System.currentTimeMillis() < start + 1000)
+            return
         shader {
             fun ParticleBuilder.update(player: Player, v: Vector) {
                 color(Color.YELLOW)
