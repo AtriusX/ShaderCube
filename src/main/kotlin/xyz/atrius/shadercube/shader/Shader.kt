@@ -18,6 +18,13 @@ class Shader : Spatial {
     val time: Long
         get() = System.currentTimeMillis()
 
+    val start: Long = time
+
+    val elapsed: Long
+        get() = time - start
+
+    var framecount: Long = 0
+
     var update: (() -> Unit)? = null
 
     var cancel: () -> Boolean = { false }
@@ -40,5 +47,6 @@ fun shader(rate: Long = 0, shader: Shader.() -> Unit) = Shader().apply {
             if (cancel())
                 schedule.cancelTask(taskId)
             update?.invoke()
+            framecount++
         }, 0L, rate)
 }
