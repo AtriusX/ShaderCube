@@ -5,9 +5,6 @@ import xyz.atrius.shadercube.Spatial
 import xyz.atrius.shadercube.util.plugin
 import xyz.atrius.shadercube.util.schedule
 
-typealias Setup =
-    Shader.() -> Unit
-
 typealias Update =
     Shader.() -> Unit
 
@@ -23,15 +20,11 @@ class Shader : Spatial {
 
     var setup: () -> Unit = {}
 
-    var update: () -> Unit = {}
+    var update: (() -> Unit)? = null
 
-    var cancel: () -> Boolean = { false }
+    var cancel: () -> Boolean = { update == null }
 
     var taskId: Int = -1
-
-    fun setup(block: () -> Unit) {
-        setup = block
-    }
 
     fun update(block: () -> Unit) {
         update = block
@@ -51,6 +44,6 @@ fun shader(rate: Long = 0, shader: Shader.() -> Unit) = Shader().apply {
     taskId = schedule.scheduleSyncRepeatingTask(plugin, {
         if (cancel())
             schedule.cancelTask(taskId)
-        update()
+        update?.invoke()
     }, 0L, rate)
 }
