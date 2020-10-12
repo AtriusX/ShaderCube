@@ -18,11 +18,9 @@ class Shader : Spatial {
     val time: Long
         get() = System.currentTimeMillis()
 
-    var setup: () -> Unit = {}
-
     var update: (() -> Unit)? = null
 
-    var cancel: () -> Boolean = { update == null }
+    var cancel: () -> Boolean = { false }
 
     var taskId: Int = -1
 
@@ -36,11 +34,8 @@ class Shader : Spatial {
 }
 
 fun shader(rate: Long = 0, shader: Shader.() -> Unit) = Shader().apply {
-    // Construct the shader script
-    shader(this)
-    // Run the setup script
-    setup()
-    // Setup update loop
+    shader(this)        // Construct the shader script
+    if (update != null) // Setup update loop
     taskId = schedule.scheduleSyncRepeatingTask(plugin, {
         if (cancel())
             schedule.cancelTask(taskId)
