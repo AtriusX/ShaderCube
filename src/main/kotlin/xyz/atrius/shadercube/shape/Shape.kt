@@ -10,8 +10,8 @@ typealias Style<T> =
     ParticleBuilder.(Data<T>) -> Unit
 
 data class Data<T>(
-    val data  : T,
-    val vector: Vector
+    val vector: Vector,
+    val data  : T
 )
 
 interface Shape<T : Shape<T>> : Spatial {
