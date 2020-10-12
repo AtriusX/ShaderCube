@@ -1,28 +1,23 @@
 package xyz.atrius.shadercube
 
 import org.bukkit.Color
-import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
-import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.plugin.java.JavaPlugin
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
-import xyz.atrius.shadercube.shader.Shader
 import xyz.atrius.shadercube.shader.shader
 import xyz.atrius.shadercube.shape.Circle
 import xyz.atrius.shadercube.shape.Star
 import kotlin.math.abs
 import kotlin.math.sin
 
-typealias KotlinPlugin =
+typealias KotlinPlugin  =
     JavaPlugin
 
 @Suppress("unused")
 class ShaderCube : KotlinPlugin(), Listener {
-
-    private val players = hashMapOf<Player, Shader>()
 
     override fun onEnable() {
         server.pluginManager.registerEvents(this, this)
@@ -34,7 +29,7 @@ class ShaderCube : KotlinPlugin(), Listener {
 
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
-        players[event.player] = shader {
+        shader {
             update {
                 point = event.player.location.add(0.0, 1.0, 0.0)
                 Circle(point, size = 4.0, vertexes = 100) { (v) ->
@@ -48,12 +43,11 @@ class ShaderCube : KotlinPlugin(), Listener {
                     location(v.rotateY(time / 2000.0).rotateX(time / 1500.0).rotateZ(time / 3000.0))
                 }
             }
+
+            cancel { !event.player.isOnline }
         }
     }
 
-    @EventHandler
-    fun onLeave(event: PlayerQuitEvent) =
-        players[event.player]?.cancel()
 }
 
 

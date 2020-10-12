@@ -11,6 +11,9 @@ typealias Setup =
 typealias Update =
     Shader.() -> Unit
 
+typealias Cancel =
+    Shader.() -> Boolean
+
 class Shader : Spatial {
 
     override lateinit var point: Location
@@ -22,6 +25,8 @@ class Shader : Spatial {
 
     var update: () -> Unit = {}
 
+    var cancel: () -> Boolean = { false }
+
     var taskId: Int = -1
 
     fun setup(block: () -> Unit) {
@@ -32,8 +37,9 @@ class Shader : Spatial {
         update = block
     }
 
-    fun cancel() =
-        schedule.cancelTask(taskId)
+    fun cancel(block: () -> Boolean) {
+        cancel = block
+    }
 }
 
 fun shader(rate: Long = 0, shader: Shader.() -> Unit) = Shader().apply {
@@ -42,5 +48,9 @@ fun shader(rate: Long = 0, shader: Shader.() -> Unit) = Shader().apply {
     // Run the setup script
     setup()
     // Setup update loop
-    taskId = schedule.scheduleSyncRepeatingTask(plugin, { update() }, 0L, rate)
+    taskId = schedule.scheduleSyncRepeatingTask(plugin, {
+        if (cancel())
+            schedule.cancelTask(taskId)
+        update()
+    }, 0L, rate)
 }
