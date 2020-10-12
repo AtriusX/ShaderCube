@@ -19,7 +19,7 @@ class Circle(
     init {
         val angle = (360.0 / vertexes).radians
         points.forEachIndexed { i, point ->
-            point.rotateY(angle * i, this.size.y)
+            point.rotateY(angle * i, size)
             particle(particle, point) {
                 block(this@Circle, point)
             }
