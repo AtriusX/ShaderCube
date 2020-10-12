@@ -11,7 +11,7 @@ typealias Update =
 typealias Cancel =
     Shader.() -> Boolean
 
-class Shader : Spatial {
+open class Shader : Spatial {
 
     override lateinit var point: Location
 
@@ -27,7 +27,7 @@ class Shader : Spatial {
 
     var update: (() -> Unit)? = null
 
-    var cancel: () -> Boolean = { false }
+    open var cancel: () -> Boolean = { false }
 
     var taskId: Int = -1
 
