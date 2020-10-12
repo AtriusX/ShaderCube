@@ -7,7 +7,12 @@ import org.bukkit.util.Vector
 import xyz.atrius.shadercube.Spatial
 
 typealias Style<T> =
-    ParticleBuilder.(T, Vector) -> Unit
+    ParticleBuilder.(Data<T>) -> Unit
+
+data class Data<T>(
+    val data  : T,
+    val vector: Vector
+)
 
 interface Shape<T : Shape<T>> : Spatial {
 
