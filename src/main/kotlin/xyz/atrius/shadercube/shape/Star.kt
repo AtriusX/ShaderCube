@@ -13,7 +13,7 @@ class Star(
                  points  : Int         = 5,
                  jump    : Int         = 2,
                  vertexes: Int         = 25,
-    override val block   : Style<Star> = { _, _ -> }
+    override val block   : Style<Star> = {}
 ) : Shape<Star> {
     override val size: Vector      = size.vec2d
     override val points: Array<Vector> = Array(points) { point.toVector() }
@@ -28,8 +28,8 @@ class Star(
             val jumpIndex = (i + jump) % points
             Line(
                 v.toLocation(world), this.points[jumpIndex].toLocation(world), particle, vertexes
-            ) { _, p ->
-                block(this@Star, p)
+            ) { (p) ->
+                block(Data(p, this@Star))
             }
         }
     }

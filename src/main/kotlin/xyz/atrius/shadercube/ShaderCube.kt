@@ -37,13 +37,13 @@ class ShaderCube : KotlinPlugin(), Listener {
         players[event.player] = shader {
             update {
                 point = event.player.location.add(0.0, 1.0, 0.0)
-                Circle(point, size = 4.0, vertexes = 100) { (_, v) ->
+                Circle(point, size = 4.0, vertexes = 100) { (v) ->
                     color(Color.RED)
                     location(v.rotateY(time / 2000.0).rotateX(time / 1500.0).rotateZ(time / 3000.0))
                 }
                 Star(
                     point, size = 4.0, points = 3 + abs(sin(time / 4000.0) * 9).toInt(), jump = 1 + abs(sin(time / 2500.0) * 3).toInt()
-                ) { (_, v) ->
+                ) { (v) ->
                     color(Color.YELLOW)
                     location(v.rotateY(time / 2000.0).rotateX(time / 1500.0).rotateZ(time / 3000.0))
                 }

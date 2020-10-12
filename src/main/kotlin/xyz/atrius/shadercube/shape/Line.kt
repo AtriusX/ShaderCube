@@ -10,7 +10,7 @@ class Line(
                  point2  : Location,
     override var particle: Particle    = Particle.REDSTONE,
                  vertexes: Int         = 100,
-    override val block   : Style<Line> = { _, _ ->}
+    override val block   : Style<Line> = {}
 ) : Shape<Line> {
 
     override val size: Vector = point.toVector()
@@ -28,7 +28,7 @@ class Line(
         for (i in points.indices) {
             points[i] = pos.toVector()
             particle(particle, pos.toVector()) {
-                block(this@Line, point.toVector())
+                block(Data(point.toVector(), this@Line))
             }
             pos.add(size)
         }

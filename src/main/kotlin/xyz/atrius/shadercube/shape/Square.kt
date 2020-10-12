@@ -13,7 +13,7 @@ class Square(
                  hollow  : Boolean       = true,
                  center  : Boolean       = true,
                  corners : Boolean       = false,
-    override val block   : Style<Square> = { _, _ -> }
+    override val block   : Style<Square> = {}
 ) : Shape<Square> {
     override val points: Array<Vector> = Array(size.blockX * size.blockZ) { point.toVector() }
 
@@ -31,7 +31,7 @@ class Square(
                         point.z + z.toDouble() / step - if (center) h / 2 else 0.0
                     )
                     particle(particle, pos) {
-                        block(this@Square, pos)
+                        block(Data(pos, this@Square))
                     }
                 }
     }

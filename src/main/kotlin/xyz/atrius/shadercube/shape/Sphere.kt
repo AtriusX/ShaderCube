@@ -12,7 +12,7 @@ class Sphere(
                  size    : Double        = 1.0,
                  rings   : Int           = 16,
                  segments: Int           = 32,
-    override val block   : Style<Sphere> = { _, _ -> }
+    override val block   : Style<Sphere> = {}
 ) : Shape<Sphere> {
 
     constructor(
@@ -20,7 +20,7 @@ class Sphere(
         particle: Particle      = Particle.REDSTONE,
         size    : Double,
         vertexes: Int,
-        block   : Style<Sphere> = { _, _ -> }
+        block   : Style<Sphere> = {}
     ) : this(point, particle, size, vertexes, vertexes, block)
 
     override val size  : Vector        = size.vec
@@ -29,13 +29,13 @@ class Sphere(
     init {
         val angle = (360.0 / segments).radians
         for (i in 1..rings)
-            Circle(point, particle, size, segments) { _, v ->
+            Circle(point, particle, size, segments) { (v) ->
                 location(v
                     .rotateY(angle * (i / 2.0)) // Offset rings so it looks less regular
                     .rotateX(angle * i)         // Rotate the rings to form a sphere
                     .rotateZ(90.radians)        // Correct direction so sphere has poles facing Y axis
                 )
-                block(this@Sphere, v)
+                block(Data(v, this@Sphere))
             }
 
     }

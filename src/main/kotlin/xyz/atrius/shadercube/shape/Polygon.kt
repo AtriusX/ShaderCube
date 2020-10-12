@@ -12,7 +12,7 @@ class Polygon(
                  size    : Double         = 1.0,
                  faces   : Int            = 3,
                  vertexes: Int            = 25,
-    override val block   : Style<Polygon> = { _, _ -> }
+    override val block   : Style<Polygon> = {}
 ) : Shape<Polygon> {
     override val size: Vector = size.vec2d
     override val points: Array<Vector> = Array(faces) { point.toVector() }
@@ -25,8 +25,8 @@ class Polygon(
         points.forEachIndexed { i, p ->
             Line(
                 p.toLocation(world), points[(i + 1) % faces].toLocation(world), particle, vertexes
-            ) { _, v ->
-                block(this@Polygon, v)
+            ) { (v) ->
+                block(Data(v, this@Polygon))
             }
         }
     }

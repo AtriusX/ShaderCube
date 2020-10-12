@@ -11,7 +11,7 @@ class Circle(
     override var particle: Particle      = Particle.REDSTONE,
                  size    : Double        = 1.0,
                  vertexes: Int           = 32,
-    override val block   : Style<Circle> = { _, _ -> }
+    override val block   : Style<Circle> = {}
 ) : Shape<Circle> {
     override val size  : Vector = size.vec2d
     override val points: Array<Vector> = Array(vertexes) { center.toVector() }
@@ -21,7 +21,7 @@ class Circle(
         points.forEachIndexed { i, point ->
             point.rotateY(angle * i, size)
             particle(particle, point) {
-                block(this@Circle, point)
+                block(Data(point, this@Circle))
             }
         }
     }

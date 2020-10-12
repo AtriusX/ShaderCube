@@ -11,7 +11,7 @@ class Triangle(
                  height  : Double          = 1.0,
                  skew    : Double          = 0.0,
                  vertexes: Int             = 25,
-    override val block   : Style<Triangle> = { _, _ -> }
+    override val block   : Style<Triangle> = {}
 ) : Shape<Triangle> {
     override val size: Vector = Vector(base, 0.0, height)
     override val points: Array<Vector> = Array(0) { point.toVector() }
@@ -26,8 +26,8 @@ class Triangle(
         )
         for (i in coords.indices) Line(
             coords[i].toLocation(world), coords[(i + 1) % coords.size].toLocation(world), particle, vertexes
-        ) { _, v ->
-            block(this@Triangle, v)
+        ) { (v) ->
+            block(Data(v, this@Triangle))
         }
     }
 }

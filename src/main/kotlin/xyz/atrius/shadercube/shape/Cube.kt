@@ -14,7 +14,7 @@ class Cube(
                  step    : Int         = 5,
                  hollow  : Boolean     = true,
                  center  : Boolean     = true,
-    override val block   : Style<Square> = { _, _ ->}
+    override val block   : Style<Square> = {}
 ) : Shape<Square> {
     override val points: Array<Vector> = arrayOf()
 
@@ -25,8 +25,8 @@ class Cube(
         if (center) p.subtract(0.0, h / 2.0, 0.0)
         for (y in 0..hSize) Square(
             p, particle, size, step, if (y in listOf(0, hSize)) hollow else true, center, y !in listOf(0, hSize) && hollow
-        ) { s, v ->
-            block(s, v)
+        ) { (v, s) ->
+            block(Data(v, s))
         }.also {
             p.add(0.0, 1.0 / step, 0.0)
         }
