@@ -77,7 +77,7 @@ fun rayCast(player: Player): Update = {
     update {
         val eyes = player.location
         val looking = player.getTargetBlock(50)?.location ?: return@update
-        Line(eyes, looking, vertexes = 100) { l, _ ->
+        Line(eyes, looking, vertexes = 100) { (l) ->
             val (x, y, z) = l.point.toVector()
             color(Color.fromRGB(
                 abs(x) % 255, abs(y) % 255, abs(z) % 255
@@ -88,60 +88,60 @@ fun rayCast(player: Player): Update = {
 
 fun sphere(point: Location): Update = {
     update {
-        Sphere(point, size = 4.0) { _, _ ->
+        Sphere(point, size = 4.0) {
             color(Color.YELLOW)
         }
     }
 }
 
 fun globe(point: Location): Update = {
-    Circle(point, size = 4.0, vertexes =  100) { _, _ ->
+    Circle(point, size = 4.0, vertexes =  100) {
         color(Color.YELLOW)
     }
-    Circle(point, size = 4.0, vertexes =  100) { _, _ ->
+    Circle(point, size = 4.0, vertexes =  100) {
         color(Color.YELLOW)
         location(location()?.toVector()
             ?.rotateX(Math.toRadians(90.0))
             ?: return@Circle)
     }
-    Circle(point, size = 4.0, vertexes =  100) { _, _ ->
+    Circle(point, size = 4.0, vertexes =  100) {
         color(Color.YELLOW)
         location(location()?.toVector()
             ?.rotateZ(Math.toRadians(90.0))
             ?: return@Circle)
     }
-    Circle(point, size = 4.0, vertexes =  100) { _, _ ->
+    Circle(point, size = 4.0, vertexes =  100) {
         color(Color.YELLOW)
         location(location()?.toVector()
             ?.rotateZ(Math.toRadians(45.0))
             ?: return@Circle)
     }
-    Circle(point, size = 4.0, vertexes =  100) { _, _ ->
+    Circle(point, size = 4.0, vertexes =  100) {
         color(Color.YELLOW)
         location(location()?.toVector()
             ?.rotateZ(Math.toRadians(-45.0))
             ?: return@Circle)
     }
-    Circle(point, size = 4.0, vertexes =  100) { _, _ ->
+    Circle(point, size = 4.0, vertexes =  100) {
         color(Color.YELLOW)
         location(location()?.toVector()
             ?.rotateX(Math.toRadians(45.0))
             ?: return@Circle)
     }
-    Circle(point, size = 4.0, vertexes =  100) { _, _ ->
+    Circle(point, size = 4.0, vertexes =  100) {
         color(Color.YELLOW)
         location(location()?.toVector()
             ?.rotateX(Math.toRadians(-45.0))
             ?: return@Circle)
     }
-    Circle(point, size = 4.0, vertexes =  100) { _, _ ->
+    Circle(point, size = 4.0, vertexes =  100) {
         color(Color.YELLOW)
         location(location()?.toVector()
             ?.rotateX(Math.toRadians(90.0))
             ?.rotateY(Math.toRadians(45.0))
             ?: return@Circle)
     }
-    Circle(point, size = 4.0, vertexes =  100) { _, _ ->
+    Circle(point, size = 4.0, vertexes =  100) {
         color(Color.YELLOW)
         location(location()?.toVector()
             ?.rotateX(Math.toRadians(90.0))
@@ -152,7 +152,7 @@ fun globe(point: Location): Update = {
 
 fun dynamo(point: Location): Update = {
     update {
-        Circle(point, size = 2.0, vertexes =  50) { _, _ ->
+        Circle(point, size = 2.0, vertexes =  50) {
             val loc = location()?.toVector() ?: return@Circle
             val (x, y, z) = loc
             val angle = Math.toRadians(time / 25.0)
@@ -165,15 +165,15 @@ fun dynamo(point: Location): Update = {
 }
 
 fun flower(point: Location): Update = {
-    Square(point, size = Vector(6.0 + sin(time / 1250.0) * 3, 0.0, 6.0)) { _, v ->
+    Square(point, size = Vector(6.0 + sin(time / 1250.0) * 3, 0.0, 6.0)) { (_, v) ->
         location(v.rotateY(time / 1500.0))
         color(Color.YELLOW)
     }
-    Square(point, size = Vector(6.0, 0.0, 6.0 + sin(time / 1500.0) * 3)) { _, v ->
+    Square(point, size = Vector(6.0, 0.0, 6.0 + sin(time / 1500.0) * 3)) { (_, v) ->
         location(v.rotateY(45.radians + time / 1500.0 + sin(time / 3000.0)))
         color(Color.AQUA)
     }
-    Sphere(point, size = 1.5, vertexes = 12) { _, v ->
+    Sphere(point, size = 1.5, vertexes = 12) { (_, v) ->
         location(v
                 .rotateX(time / 300.0)
                 .rotateZ(time / 250.0)
@@ -181,7 +181,7 @@ fun flower(point: Location): Update = {
         )
         color(Color.RED)
     }
-    Circle(point, size = sin(time / 500.0) * 10, vertexes = 8) { _, v ->
+    Circle(point, size = sin(time / 500.0) * 10, vertexes = 8) { (_, v) ->
         location(v.rotateY(time / 1000.0).add(Vector(0.0, abs(sin(time / 500.0)) * 3, 0.0)))
         color(Color.FUCHSIA, 5f)
     }
@@ -189,38 +189,38 @@ fun flower(point: Location): Update = {
 
 fun cubes(point: Location): Update = {
     val angle = time / 7500.0
-    Cube(point, size = 3.vec, step = 3) { _, v ->
+    Cube(point, size = 3.vec, step = 3) { (_, v) ->
         location(v.rotateX(angle * 2).rotateY(angle).rotateZ(-angle * 3))
         color(Color.YELLOW, 0.5f)
     }
-    Cube(point, size = 3.vec, step = 3) { _, v ->
+    Cube(point, size = 3.vec, step = 3) { (_, v) ->
         location(v.rotateX(angle * 3).rotateY(-angle * 2).rotateZ(angle))
         color(Color.AQUA, 0.5f)
     }
-    Cube(point, size = 3.vec, step = 3) { _, v ->
+    Cube(point, size = 3.vec, step = 3) { (_, v) ->
         location(v.rotateX(-angle * 2).rotateY(angle).rotateZ(-angle * 1.5))
         color(Color.RED, 0.5f)
     }
-    Cube(point, size = 3.vec, step = 3) { _, v ->
+    Cube(point, size = 3.vec, step = 3) { (_, v) ->
         location(v.rotateX(-angle * 3).rotateY(-angle * 1.5).rotateZ(angle))
         color(Color.LIME, 0.5f)
     }
 }
 
 fun floorMarkings(point: Location): Update = {
-    Polygon(point, Particle.REDSTONE, 3.0) { p, v ->
+    Polygon(point, Particle.REDSTONE, 3.0) { (_, v) ->
         location(v.rotateY(time / 1500.0))
         color(Color.YELLOW, 0.5f)
     }
-    Polygon(point, Particle.REDSTONE, 3.0) { _, v ->
+    Polygon(point, Particle.REDSTONE, 3.0) { (_, v) ->
         location(v.rotateY(40.radians + time / 1500.0))
         color(Color.AQUA, 0.5f)
     }
-    Polygon(point, Particle.REDSTONE, 3.0) { _, v ->
+    Polygon(point, Particle.REDSTONE, 3.0) { (_, v) ->
         location(v.rotateY(80.radians + time / 1500.0))
         color(Color.RED, 0.5f)
     }
-    Polygon(point, Particle.REDSTONE, 1.0, 6) { _, v ->
+    Polygon(point, Particle.REDSTONE, 1.0, 6) { (_, v) ->
         location(v.rotateY(time / 1500.0))
         color(Color.LIME, 0.5f)
     }
@@ -236,7 +236,7 @@ fun e(point: Location): Update = {
     data.forEach { (c, a) ->
         Triangle(point, Particle.REDSTONE,
             2 + abs(sin(time / 1000.0) * 10), 2 + abs(sin(time / 1500.0) * 6), sin(time / 3000.0) * 3
-        ) { _, v ->
+        ) { (_, v) ->
             location(v.rotateY(a.radians + cos(time / 2500.0)))
             color(c)
         }
