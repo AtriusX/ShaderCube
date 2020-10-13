@@ -19,16 +19,16 @@ class Animation(
     }
 }
 
-fun Animation.beforeFrame(frame: Int, block: Update) =
-    frame(0..frame, block)
+fun Animation.before(frame: Int, block: Update) =
+    between(0..frame, block)
 
-fun Animation.afterFrame(frame: Int, block: Update) =
-    frame(frame..frameDuration, block)
+fun Animation.after(frame: Int, block: Update) =
+    between(frame..frameDuration, block)
 
 fun Animation.frame(frame: Int, block: Update) =
-    frame(frame..frame, block)
+    between(frame..frame, block)
 
-fun Animation.frame(frames: IntRange, block: Update) {
+fun Animation.between(frames: IntRange, block: Update) {
     if (framecount in frames) block()
 }
 
@@ -38,7 +38,7 @@ fun animation(rate: Long = 0, frames: Int = 20, shader: Animation.() -> Unit) = 
         taskId = schedule.scheduleSyncRepeatingTask(plugin, {
             if (cancel())
                 schedule.cancelTask(taskId)
-            update?.invoke()
+            update?.invoke(this)
             framecount++
         }, 0L, rate)
 }
