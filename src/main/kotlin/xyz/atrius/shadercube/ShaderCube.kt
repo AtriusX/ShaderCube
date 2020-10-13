@@ -1,19 +1,18 @@
 package xyz.atrius.shadercube
 
 import org.bukkit.Color
+import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
-import org.bukkit.entity.LightningStrike
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.util.Vector
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import xyz.atrius.shadercube.data.orbit
-import xyz.atrius.shadercube.shader.entity
-import xyz.atrius.shadercube.shader.shader
-import xyz.atrius.shadercube.shader.sound
+import xyz.atrius.shadercube.shader.*
 import kotlin.random.Random
 
 typealias KotlinPlugin  =
@@ -47,7 +46,11 @@ class ShaderCube : KotlinPlugin(), Listener {
                     }
                 }
                 every(60) {
-                    entity<LightningStrike>()
+                    fallingBlock(Material.OBSIDIAN) {
+                        velocity = Vector(0.0, 3.0, 0.0)
+                    }
+                    lightning()
+                    explosion()
                 }
             }
 
