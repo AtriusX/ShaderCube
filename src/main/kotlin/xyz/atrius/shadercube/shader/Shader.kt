@@ -40,7 +40,7 @@ open class Shader : Spatial {
     }
 
     fun every(frames: Int, block: Update) {
-        if (framecount % frames == 0) block(this)
+        if (framecount % frames == 0 && framecount != 0) block(this)
     }
 }
 
