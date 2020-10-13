@@ -28,8 +28,6 @@ class ShaderCube : KotlinPlugin(), Listener {
         }
     }
 
-    private var start = Long.MAX_VALUE
-
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
         val player = event.player
