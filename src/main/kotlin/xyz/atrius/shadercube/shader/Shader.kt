@@ -23,20 +23,24 @@ open class Shader : Spatial {
     val elapsed: Long
         get() = time - start
 
-    var framecount: Long = 0
+    var framecount: Int = 0
 
-    var update: (() -> Unit)? = null
+    var update: Update? = null
 
     open var cancel: Cancel = { false }
 
     var taskId: Int = -1
 
-    fun update(block: () -> Unit) {
+    fun update(block: Update) {
         update = block
     }
 
     open fun cancel(block: Cancel) {
         cancel = block
+    }
+
+    fun every(frames: Int, block: Update) {
+        if (framecount % frames == 0) block(this)
     }
 }
 
@@ -46,7 +50,7 @@ fun shader(rate: Long = 0, shader: Shader.() -> Unit) = Shader().apply {
         taskId = schedule.scheduleSyncRepeatingTask(plugin, {
             if (cancel())
                 schedule.cancelTask(taskId)
-            update?.invoke()
+            update?.invoke(this)
             framecount++
         }, 0L, rate)
 }
