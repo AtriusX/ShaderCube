@@ -4,12 +4,32 @@ import xyz.atrius.shadercube.util.plugin
 import xyz.atrius.shadercube.util.schedule
 
 class Animation(
-    frameDuration: Int
+    val frameDuration: Int
 ) : Shader() {
 
-    override var cancel: () -> Boolean = {
-        framecount >= frameDuration
+    private val endAnimation: Boolean
+        get() = framecount >= frameDuration
+
+    override var cancel: Cancel = {
+        endAnimation
     }
+
+    override fun cancel(block: Cancel) {
+        cancel = { endAnimation || block() }
+    }
+}
+
+fun Animation.beforeFrame(frame: Int, block: Update) =
+    frame(0..frame, block)
+
+fun Animation.afterFrame(frame: Int, block: Update) =
+    frame(frame..frameDuration, block)
+
+fun Animation.frame(frame: Int, block: Update) =
+    frame(frame..frame, block)
+
+fun Animation.frame(frames: IntRange, block: Update) {
+    if (framecount in frames) block()
 }
 
 fun animation(rate: Long = 0, frames: Int = 20, shader: Animation.() -> Unit) = Animation(frames).apply {
