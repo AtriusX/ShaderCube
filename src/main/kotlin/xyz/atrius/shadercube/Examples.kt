@@ -7,8 +7,7 @@ import org.bukkit.Particle
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.util.Vector
-import xyz.atrius.shadercube.shader.Update
-import xyz.atrius.shadercube.shader.shader
+import xyz.atrius.shadercube.shader.*
 import xyz.atrius.shadercube.shape.*
 import xyz.atrius.shadercube.util.*
 import kotlin.math.abs
@@ -279,5 +278,26 @@ fun flyStar(event: PlayerMoveEvent) {
             points = 3 + abs(sin(time / 2000.0) * 9).toInt(),
             jump   = 1 + abs(sin(time / 500.0) * 3).toInt()
         ) { (v) -> update(player, v) }
+    }
+}
+
+fun frameAnimation(player: Player) = animation(frames = 80) {
+    point = player.location.add(0.0, 1.0, 0.0)
+    update {
+        before(40) {
+            Circle(point, size = 2.0) {
+                color(Color.YELLOW)
+            }
+        }
+        between(20..60) {
+            Cube(point, size = 2.vec) {
+                color(Color.LIME)
+            }
+        }
+        after(40) {
+            Star(point, size = 2.0) {
+                color(Color.AQUA)
+            }
+        }
     }
 }
