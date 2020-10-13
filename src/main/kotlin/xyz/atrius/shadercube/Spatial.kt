@@ -14,13 +14,13 @@ interface Spatial {
         get() = point.world
 
     fun Vector.rotateX(angle: Double, offset: Double = 0.0, center: Vector = point.toVector()) =
-        subtract(center).add(Vector(0.0, offset, offset)).rotateAroundX(angle).add(center)
+        subtract(center).add(Vector(0.0, offset, 0.0)).rotateAroundX(angle).add(center)
 
     fun Vector.rotateY(angle: Double, offset: Double = 0.0, center: Vector = point.toVector()) =
-        subtract(center).add(Vector(offset, 0.0, offset)).rotateAroundY(angle).add(center)
+        subtract(center).add(Vector(offset, 0.0, 0.0)).rotateAroundY(angle).add(center)
 
     fun Vector.rotateZ(angle: Double, offset: Double = 0.0, center: Vector = point.toVector()) =
-        subtract(center).add(Vector(offset, offset, 0.0)).rotateAroundZ(angle).add(center)
+        subtract(center).add(Vector(0.0, offset, 0.0)).rotateAroundZ(angle).add(center)
 
     fun particle(particle: Particle, position: Vector = point.toVector(), block: ParticleBuilder.() -> Unit) {
         val builder = ParticleBuilder(particle).location(position.toLocation(world))

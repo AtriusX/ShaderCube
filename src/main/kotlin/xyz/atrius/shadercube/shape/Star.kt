@@ -20,9 +20,8 @@ class Star(
 
     init {
         val angle = (360.0 / points).radians
-        val offset = angle / (points / 2.0)
         this.points.forEachIndexed { i, v ->
-            v.rotateY(angle * i + offset, size)
+            v.rotateY(angle * i, size)
         }
         this.points.forEachIndexed { i, v ->
             val jumpIndex = (i + jump) % points
