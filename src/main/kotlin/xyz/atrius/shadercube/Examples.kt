@@ -23,7 +23,6 @@ fun orbit(point: Location): Update = {
                 .rotateX(angle, 1.0)
                 .rotateY(45.0)
             )
-
         }
         particle(Particle.REDSTONE) {
             color(Color.AQUA)
@@ -76,23 +75,19 @@ fun orbit(point: Location): Update = {
 }
 
 fun rayCast(player: Player): Update = {
-    update {
-        val eyes = player.location
-        val looking = player.getTargetBlock(50)?.location ?: return@update
-        Line(eyes, looking, vertexes = 100) { (_, l) ->
-            val (x, y, z) = l.point.toVector()
-            color(Color.fromRGB(
-                abs(x) % 255, abs(y) % 255, abs(z) % 255
-            ))
-        }
+    val eyes = player.location
+    val looking = player.getTargetBlock(50)?.location ?: eyes
+    Line(eyes, looking, vertexes = 100) { (_, l) ->
+        val (x, y, z) = l.point.toVector()
+        color(Color.fromRGB(
+            abs(x) % 255, abs(y) % 255, abs(z) % 255
+        ))
     }
 }
 
 fun sphere(point: Location): Update = {
-    update {
-        Sphere(point, size = 4.0) {
-            color(Color.YELLOW)
-        }
+    Sphere(point, size = 4.0) {
+        color(Color.YELLOW)
     }
 }
 
@@ -177,9 +172,9 @@ fun flower(point: Location): Update = {
     }
     Sphere(point, size = 1.5, vertexes = 12) { (v) ->
         location(v
-                .rotateX(time / 300.0)
-                .rotateZ(time / 250.0)
-                .add(Vector(0.0, 1.0, 0.0))
+            .rotateX(time / 300.0)
+            .rotateZ(time / 250.0)
+            .add(Vector(0.0, 1.0, 0.0))
         )
         color(Color.RED)
     }
@@ -210,17 +205,14 @@ fun cubes(point: Location): Update = {
 }
 
 fun floorMarkings(point: Location): Update = {
-    Polygon(point, Particle.REDSTONE, 3.0) { (v) ->
-        location(v.rotateY(time / 1500.0))
-        color(Color.YELLOW, 0.5f)
-    }
-    Polygon(point, Particle.REDSTONE, 3.0) { (v) ->
-        location(v.rotateY(40.radians + time / 1500.0))
-        color(Color.AQUA, 0.5f)
-    }
-    Polygon(point, Particle.REDSTONE, 3.0) { (v) ->
-        location(v.rotateY(80.radians + time / 1500.0))
-        color(Color.RED, 0.5f)
+    val data = listOf(
+        Color.YELLOW, Color.AQUA, Color.RED
+    )
+    data.forEachIndexed { i, c ->
+        Polygon(point, Particle.REDSTONE, 3.0) { (v) ->
+            location(v.rotateY((40 * i).radians + time / 1500.0))
+            color(c, 0.5f)
+        }
     }
     Polygon(point, Particle.REDSTONE, 1.0, 6) { (v) ->
         location(v.rotateY(time / 1500.0))
@@ -229,17 +221,16 @@ fun floorMarkings(point: Location): Update = {
 }
 
 fun triangles(point: Location): Update = {
-    val data = hashMapOf(
-            Color.YELLOW to 0,
-            Color.AQUA to 90,
-            Color.LIME to 180,
-            Color.RED to 270
+    val data = listOf(
+        Color.YELLOW, Color.AQUA, Color.LIME, Color.RED
     )
-    data.forEach { (c, a) ->
+    data.forEachIndexed { i, c ->
         Triangle(point, Particle.REDSTONE,
-            2 + abs(sin(time / 1000.0) * 10), 2 + abs(sin(time / 1500.0) * 6), sin(time / 3000.0) * 3
+            2 + abs(sin(time / 1000.0) * 10),
+            2 + abs(sin(time / 1500.0) * 6),
+            sin(time / 3000.0) * 3
         ) { (v) ->
-            location(v.rotateY(a.radians + cos(time / 2500.0)))
+            location(v.rotateY((90 * i).radians + cos(time / 2500.0)))
             color(c)
         }
     }
