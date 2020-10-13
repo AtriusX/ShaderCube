@@ -1,11 +1,14 @@
 package xyz.atrius.shadercube
 
+import com.destroystokyo.paper.ParticleBuilder
 import org.bukkit.Color
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.entity.Player
+import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.util.Vector
 import xyz.atrius.shadercube.shader.Update
+import xyz.atrius.shadercube.shader.shader
 import xyz.atrius.shadercube.shape.*
 import xyz.atrius.shadercube.util.*
 import kotlin.math.abs
@@ -240,5 +243,41 @@ fun triangles(point: Location): Update = {
             location(v.rotateY(a.radians + cos(time / 2500.0)))
             color(c)
         }
+    }
+}
+
+private var start = 0L
+
+fun flyStar(event: PlayerMoveEvent) {
+    val player = event.player
+    if (!player.isGliding) {
+        start = Long.MAX_VALUE
+        return
+    }
+    val launch = System.currentTimeMillis()
+    if (start > launch)
+        start = launch
+    if (System.currentTimeMillis() < start + 1000)
+        return
+
+    shader {
+        point = player.location.add(0.0, 9.0, 0.0)
+        fun ParticleBuilder.update(player: Player, v: Vector) {
+            color(Color.YELLOW)
+            location(v.rotateX((90.0 + point.pitch).radians,
+                    center = player.eyeLocation.toVector())
+                    .rotateY(-point.yaw.toDouble().radians)
+            )
+        }
+        val size = 4.0
+        Circle(point,
+            size     = size,
+            vertexes = 100
+        ) { (v) -> update(player, v) }
+        Star(point,
+            size   = size,
+            points = 3 + abs(sin(time / 2000.0) * 9).toInt(),
+            jump   = 1 + abs(sin(time / 500.0) * 3).toInt()
+        ) { (v) -> update(player, v) }
     }
 }

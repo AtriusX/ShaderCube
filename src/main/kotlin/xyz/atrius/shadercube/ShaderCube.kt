@@ -1,21 +1,18 @@
 package xyz.atrius.shadercube
 
-import com.destroystokyo.paper.ParticleBuilder
 import org.bukkit.Color
-import org.bukkit.entity.Player
+import org.bukkit.Particle
+import org.bukkit.Sound
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.player.PlayerMoveEvent
+import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
-import org.bukkit.util.Vector
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
+import xyz.atrius.shadercube.data.orbit
 import xyz.atrius.shadercube.shader.shader
-import xyz.atrius.shadercube.shape.Circle
-import xyz.atrius.shadercube.shape.Star
-import xyz.atrius.shadercube.util.radians
-import kotlin.math.abs
-import kotlin.math.sin
+import xyz.atrius.shadercube.shader.sound
+import kotlin.random.Random
 
 typealias KotlinPlugin  =
     JavaPlugin
@@ -34,36 +31,25 @@ class ShaderCube : KotlinPlugin(), Listener {
     private var start = Long.MAX_VALUE
 
     @EventHandler
-    fun onJoin(event: PlayerMoveEvent) {
+    fun onJoin(event: PlayerJoinEvent) {
         val player = event.player
-        if (!player.isGliding) {
-            start = Long.MAX_VALUE
-            return
-        }
-        val launch = System.currentTimeMillis()
-        if (start > launch)
-            start = launch
-        if (System.currentTimeMillis() < start + 1000)
-            return
         shader {
-            fun ParticleBuilder.update(player: Player, v: Vector) {
-                color(Color.YELLOW)
-                location(v.rotateX((90.0 + point.pitch).radians,
-                        center = player.eyeLocation.toVector())
-                        .rotateY(-point.yaw.toDouble().radians)
-                )
+            point = player.location
+            val o = orbit(point, 5.0) { (v, o) ->
+                particle(Particle.REDSTONE, v) {
+                    color(Color.YELLOW, 5f)
+                }
+                every(3) {
+                    o.rate -= 0.05
+                    sound(Sound.BLOCK_NOTE_BLOCK_BIT) {
+                        point = v
+                        pitch = Random.nextDouble() * 2
+                    }
+                }
             }
-            point = player.location.add(0.0, 9.0, 0.0)
-            val size = 4.0
-            Circle(point,
-                size     = size,
-                vertexes = 100
-            ) { (v) -> update(player, v) }
-            Star(point,
-                size   = size,
-                points = 3 + abs(sin(time / 2000.0) * 9).toInt(),
-                jump   = 1 + abs(sin(time / 500.0) * 3).toInt()
-            ) { (v) -> update(player, v) }
+
+            update { o.update() }
+            cancel { !player.isOnline }
         }
     }
 }
