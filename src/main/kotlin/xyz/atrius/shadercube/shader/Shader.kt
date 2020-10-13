@@ -27,7 +27,7 @@ open class Shader : Spatial {
 
     var update: (() -> Unit)? = null
 
-    open var cancel: () -> Boolean = { false }
+    open var cancel: Cancel = { false }
 
     var taskId: Int = -1
 
@@ -35,7 +35,7 @@ open class Shader : Spatial {
         update = block
     }
 
-    fun cancel(block: () -> Boolean) {
+    open fun cancel(block: Cancel) {
         cancel = block
     }
 }
