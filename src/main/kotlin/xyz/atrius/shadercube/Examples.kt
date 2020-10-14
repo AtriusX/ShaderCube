@@ -172,7 +172,7 @@ fun flower(point: Location): Update = {
         location(v.rotateY(45.radians + time / 1500.0 + sin(time / 3000.0)))
         color(Color.AQUA)
     }
-    Sphere(point, size = 1.5, vertexes = 12) { (v) ->
+    Sphere(point, size = 1.5, rings = 12) { (v) ->
         location(v
             .rotateX(time / 300.0)
             .rotateZ(time / 250.0)
