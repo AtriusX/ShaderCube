@@ -3,11 +3,12 @@ package xyz.atrius.shadercube.shape
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.util.Vector
+import xyz.atrius.shadercube.shader.Shader
 import xyz.atrius.shadercube.util.vec
 
 class Line(
     override var location: Location,
-                 point2  : Location,
+                 point2  : Location    = location,
     override var particle: Particle    = Particle.REDSTONE,
                  vertexes: Int         = 100,
     override val block   : Style<Line> = {}
@@ -34,3 +35,11 @@ class Line(
         }
     }
 }
+
+fun Shader.line(
+    point   : Vector      = this.point,
+    point2  : Vector      = this.point,
+    particle: Particle    = Particle.REDSTONE,
+    vertexes: Int         = 100,
+    block   : Style<Line> = {}
+) = Line(point.toLocation(world), point2.toLocation(world), particle, vertexes, block)

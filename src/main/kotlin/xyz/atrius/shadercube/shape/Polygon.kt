@@ -3,6 +3,7 @@ package xyz.atrius.shadercube.shape
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.util.Vector
+import xyz.atrius.shadercube.shader.Shader
 import xyz.atrius.shadercube.util.radians
 import xyz.atrius.shadercube.util.vec2d
 
@@ -31,3 +32,12 @@ class Polygon(
         }
     }
 }
+
+fun Shader.polygon(
+    point   : Vector         = this.point,
+    particle: Particle       = Particle.REDSTONE,
+    size    : Double         = 1.0,
+    faces   : Int            = 3,
+    vertexes: Int            = 25,
+    block   : Style<Polygon> = {}
+) = Polygon(point.toLocation(world), particle, size, faces, vertexes, block)

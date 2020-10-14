@@ -3,6 +3,7 @@ package xyz.atrius.shadercube.shape
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.util.Vector
+import xyz.atrius.shadercube.shader.Shader
 import xyz.atrius.shadercube.util.vec2d
 
 class Square(
@@ -36,3 +37,14 @@ class Square(
                 }
     }
 }
+
+fun Shader.square(
+    point   : Vector        = this.point,
+    particle: Particle      = Particle.REDSTONE,
+    size    : Vector        = 1.vec2d,
+    step    : Int           = 5,
+    hollow  : Boolean       = true,
+    center  : Boolean       = true,
+    corners : Boolean       = false,
+    block   : Style<Square> = {}
+) = Square(point.toLocation(world), particle, size, step, hollow, center, corners, block)
