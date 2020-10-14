@@ -24,12 +24,13 @@ open class Shader : Spatial {
         get() = time - start
 
     var framecount: Int = 0
+        private set
+
+    private var taskId: Int = -1
 
     var update: Update? = null
 
     open var cancel: Cancel = { false }
-
-    var taskId: Int = -1
 
     fun update(block: Update) {
         update = block
@@ -42,15 +43,20 @@ open class Shader : Spatial {
     fun every(frames: Int, block: Update) {
         if (framecount % frames == 0 && framecount != 0) block(this)
     }
+
+    companion object {
+
+        internal fun start(rate: Long = 0, shader: Shader.() -> Unit) = Shader().apply {
+            shader(this)        // Construct the shader script
+            if (update != null) // Setup update loop
+                taskId = schedule.scheduleSyncRepeatingTask(plugin, {
+                    if (cancel()) schedule.cancelTask(taskId)
+                    update?.invoke(this)
+                    framecount++
+                }, 0L, rate)
+        }
+    }
 }
 
-fun shader(rate: Long = 0, shader: Shader.() -> Unit) = Shader().apply {
-    shader(this)        // Construct the shader script
-    if (update != null) // Setup update loop
-        taskId = schedule.scheduleSyncRepeatingTask(plugin, {
-            if (cancel())
-                schedule.cancelTask(taskId)
-            update?.invoke(this)
-            framecount++
-        }, 0L, rate)
-}
+fun shader(rate: Long = 0, shader: Update) =
+    Shader.start(rate, shader)
