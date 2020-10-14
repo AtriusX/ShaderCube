@@ -304,7 +304,6 @@ fun apiTest(player: Player) {
                 lightning()
                 explosion()
                 entity<Spider> {
-                    health = 5000.0
                     potion(PotionEffectType.INVISIBILITY)
                 }
                 firework {
