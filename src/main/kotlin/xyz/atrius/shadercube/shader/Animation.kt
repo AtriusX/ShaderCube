@@ -1,8 +1,4 @@
 package xyz.atrius.shadercube.shader
-
-import xyz.atrius.shadercube.util.plugin
-import xyz.atrius.shadercube.util.schedule
-
 class Animation(
     val frameDuration: Int
 ) : Shader() {
@@ -10,14 +6,19 @@ class Animation(
     private val endAnimation: Boolean
         get() = framecount >= frameDuration
 
-    override var cancel: Cancel = {
-        endAnimation
-    }
+    override var cancel: Cancel = { endAnimation }
+        set(value) {
+            field = { endAnimation || value() }
+        }
 
-    override fun cancel(block: Cancel) {
-        cancel = { endAnimation || block() }
+    companion object {
+        internal fun start(rate: Long = 0, frames: Int = 20, shader: Animation.() -> Unit) = Animation(frames).apply {
+            shader(this) // Construct the shader script
+            update(rate)
+        }
     }
 }
+
 
 fun Animation.before(frame: Int, block: Update) =
     between(0..frame, block)
@@ -32,13 +33,5 @@ fun Animation.between(frames: IntRange, block: Update) {
     if (framecount in frames) block()
 }
 
-fun animation(rate: Long = 0, frames: Int = 20, shader: Animation.() -> Unit) = Animation(frames).apply {
-    shader(this)        // Construct the shader script
-    if (update != null) // Setup update loop
-        taskId = schedule.scheduleSyncRepeatingTask(plugin, {
-            if (cancel())
-                schedule.cancelTask(taskId)
-            update?.invoke(this)
-            framecount++
-        }, 0L, rate)
-}
+fun animation(rate: Long = 0, frames: Int = 20, shader: Animation.() -> Unit) =
+    Animation.start(rate, frames, shader)

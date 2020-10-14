@@ -2,6 +2,7 @@ package xyz.atrius.shadercube.shader
 
 import org.bukkit.Location
 import xyz.atrius.shadercube.Spatial
+import xyz.atrius.shadercube.data.Updatable
 import xyz.atrius.shadercube.util.plugin
 import xyz.atrius.shadercube.util.schedule
 
@@ -24,19 +25,32 @@ open class Shader : Spatial {
         get() = time - start
 
     var framecount: Int = 0
-        private set
+        protected set
 
-    private var taskId: Int = -1
+    protected var taskId: Int = -1
+
+    lateinit var objects: Array<out Updatable>
 
     var update: Update? = null
 
     open var cancel: Cancel = { false }
 
-    fun update(block: Update) {
+    fun update(vararg objects: Updatable, block: Update) {
+        this.objects = objects
         update = block
     }
 
-    open fun cancel(block: Cancel) {
+    protected fun update(rate: Long = 0) {
+        taskId = schedule.scheduleSyncRepeatingTask(plugin, {
+            if (cancel())
+                schedule.cancelTask(taskId)
+            update?.invoke(this)
+            objects.forEach(Updatable::update)
+            framecount++
+        }, 0L, rate)
+    }
+
+    fun cancel(block: Cancel) {
         cancel = block
     }
 
@@ -47,13 +61,14 @@ open class Shader : Spatial {
     companion object {
 
         internal fun start(rate: Long = 0, shader: Shader.() -> Unit) = Shader().apply {
-            shader(this)        // Construct the shader script
-            if (update != null) // Setup update loop
-                taskId = schedule.scheduleSyncRepeatingTask(plugin, {
-                    if (cancel()) schedule.cancelTask(taskId)
-                    update?.invoke(this)
-                    framecount++
-                }, 0L, rate)
+            shader(this) // Construct the shader script
+            taskId = schedule.scheduleSyncRepeatingTask(plugin, {
+                if (cancel())
+                    schedule.cancelTask(taskId)
+                update?.invoke(this)
+                objects.forEach(Updatable::update)
+                framecount++
+            }, 0L, rate)
         }
     }
 }
