@@ -1,18 +1,20 @@
 package xyz.atrius.shadercube
 
 import com.destroystokyo.paper.ParticleBuilder
-import org.bukkit.Color
-import org.bukkit.Location
-import org.bukkit.Particle
+import org.bukkit.*
 import org.bukkit.entity.Player
+import org.bukkit.entity.Spider
 import org.bukkit.event.player.PlayerMoveEvent
+import org.bukkit.potion.PotionEffectType
 import org.bukkit.util.Vector
+import xyz.atrius.shadercube.data.orbit
 import xyz.atrius.shadercube.shader.*
 import xyz.atrius.shadercube.shape.*
 import xyz.atrius.shadercube.util.*
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
+import kotlin.random.Random
 
 fun orbit(point: Location): Update = {
     update {
@@ -290,5 +292,52 @@ fun frameAnimation(player: Player) = animation(frames = 80) {
                 color(Color.AQUA)
             }
         }
+    }
+}
+
+fun apiTest(player: Player) {
+    shader {
+        point = player.location
+        val o = orbit(point, 5.0) { (v, o) ->
+            particle(Particle.REDSTONE, v) {
+                color(Color.YELLOW, 5f)
+            }
+            every(3) {
+                o.rate -= 0.05
+                sound(Sound.BLOCK_NOTE_BLOCK_BIT) {
+                    point = v
+                    pitch = Random.nextDouble() * 2
+                }
+            }
+        }
+        update {
+            point = player.location
+            o.point = point
+            o.update()
+
+            every(60) {
+                fallingBlock(Material.OBSIDIAN) {
+                    velocity = Vector(0.0, 3.0, 0.0)
+                }
+                lightning()
+                explosion()
+                entity<Spider> {
+                    health = 5000.0
+                    potion(PotionEffectType.INVISIBILITY)
+                }
+                firework {
+                    velocity = 1.vec2d
+                    isShotAtAngle = true
+                    meta {
+                        addEffect {
+                            withColor(Color.AQUA, Color.YELLOW)
+                            withFlicker()
+                            withTrail()
+                        }
+                    }
+                }
+            }
+        }
+        cancel { !player.isOnline }
     }
 }

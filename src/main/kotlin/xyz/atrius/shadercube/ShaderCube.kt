@@ -1,21 +1,16 @@
 package xyz.atrius.shadercube
 
-import org.bukkit.Color
-import org.bukkit.Material
 import org.bukkit.Particle
-import org.bukkit.Sound
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
-import org.bukkit.util.Vector
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
-import xyz.atrius.shadercube.data.orbit
-import xyz.atrius.shadercube.shader.*
-import kotlin.random.Random
+import xyz.atrius.shadercube.shader.animation
+import xyz.atrius.shadercube.shape.Circle
 
-typealias KotlinPlugin  =
+typealias KotlinPlugin =
     JavaPlugin
 
 @Suppress("unused")
@@ -32,46 +27,15 @@ class ShaderCube : KotlinPlugin(), Listener {
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
         val player = event.player
-        shader {
-            point = player.location
-            val o = orbit(point, 5.0) { (v, o) ->
-                particle(Particle.REDSTONE, v) {
-                    color(Color.YELLOW, 5f)
-                }
-                every(3) {
-                    o.rate -= 0.05
-                    sound(Sound.BLOCK_NOTE_BLOCK_BIT) {
-                        point = v
-                        pitch = Random.nextDouble() * 2
-                    }
-                }
-                every(60) {
-                    fallingBlock(Material.OBSIDIAN) {
-                        velocity = Vector(0.0, 3.0, 0.0)
-                    }
-                    lightning()
-                    explosion()
-                    firework {
-                        velocity = Vector(1.0, 0.0, 1.0)
-                        meta {
-                            addEffect {
-                                withColor(Color.AQUA, Color.YELLOW)
-                                withFlicker()
-                                withTrail()
-                            }
-                        }
-                        detonate()
-                    }
-                }
-            }
-
+        animation(2, 100) {
+            point = player.location.apply { y = 255.0 }
             update {
-                point = player.location
-                o.point = point
-                o.update()
+                Circle(point, Particle.END_ROD, ((frameDuration - framecount)).toDouble(), 100) {
+                    force(true)
+                    count(3)
+                    extra(0.2)
+                }
             }
-            cancel { !player.isOnline }
         }
     }
 }
-
