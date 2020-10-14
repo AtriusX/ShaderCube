@@ -40,7 +40,7 @@ class ShaderCube : KotlinPlugin(), Listener {
                     extra(remainingFrames / frameDuration.toDouble() + 0.1)
                 }
                 frame(50) {
-                    lightning(world.getHighestBlockAt(location).location.toVector(), true)
+                    lightning(world.getHighestBlockAt(location).location, true)
                 }
             }
         }
