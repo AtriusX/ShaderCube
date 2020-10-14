@@ -8,8 +8,8 @@ typealias PotionBuilder =
     PotionEffectData.() -> Unit
 
 data class PotionEffectData(
-    var duration : Int = 10000,
-    var amplifier: Int = 1,
+    var duration : Int     = 10000,
+    var amplifier: Int     = 1,
     var ambient  : Boolean = true,
     var particles: Boolean = ambient,
     var icon     : Boolean = ambient

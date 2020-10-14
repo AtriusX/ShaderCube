@@ -14,7 +14,7 @@ data class ExplosionData(
 )
 
 fun Shader.explosion(
-    point: Vector           = this.point.toVector(),
+    point: Vector           = this.point,
     data : ExplosionBuilder = {}
 ) {
     val (power, setFire, breakBlocks, source) = ExplosionData().apply(data)

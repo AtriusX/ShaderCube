@@ -24,7 +24,7 @@ fun FireworkMeta.addEffect(effect: FireworkEffectBuilder) {
 }
 
 fun Shader.firework(
-    point: Vector          = this.point.toVector(),
+    point: Vector          = this.point,
     block: FireworkBuilder = {}
 ) = entity<Firework>(point) {
     this.apply(block)

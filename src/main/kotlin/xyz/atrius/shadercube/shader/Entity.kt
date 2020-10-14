@@ -7,7 +7,7 @@ import org.bukkit.entity.FallingBlock
 import org.bukkit.util.Vector
 
 inline fun <reified T : Entity> Shader.entity(
-    point         : Vector       = this.point.toVector(),
+    point         : Vector       = this.point,
     effect        : Boolean      = false,
     noinline block: T.() -> Unit = {}
 ) = try {
@@ -18,7 +18,7 @@ inline fun <reified T : Entity> Shader.entity(
 }
 
 fun Shader.lightning(
-    point : Vector  = this.point.toVector(),
+    point : Vector  = this.point,
     effect: Boolean = false
 ) = if (effect)
     world.strikeLightningEffect(point.toLocation(world))
@@ -27,7 +27,7 @@ else
 
 fun Shader.fallingBlock(
     material: Material             = Material.SAND,
-    point: Vector                  = this.point.toVector(),
+    point: Vector                  = this.point,
     block: FallingBlock.() -> Unit = {}
 ) {
     world.spawnFallingBlock(
