@@ -100,68 +100,49 @@ fun globe(): Update = {
     Circle(location, size = 4.0, vertexes =  100) {
         color(Color.YELLOW)
     }
-    Circle(location, size = 4.0, vertexes =  100) {
+    Circle(location, size = 4.0, vertexes =  100) { (v) ->
         color(Color.YELLOW)
-        location(location()?.toVector()
-            ?.rotateX(Math.toRadians(90.0))
-            ?: return@Circle)
+        location(v.rotateX(Math.toRadians(90.0)))
     }
-    Circle(location, size = 4.0, vertexes =  100) {
+    Circle(location, size = 4.0, vertexes =  100) { (v) ->
         color(Color.YELLOW)
-        location(location()?.toVector()
-            ?.rotateZ(Math.toRadians(90.0))
-            ?: return@Circle)
+        location(v.rotateZ(Math.toRadians(90.0)))
     }
-    Circle(location, size = 4.0, vertexes =  100) {
+    Circle(location, size = 4.0, vertexes =  100) { (v) ->
         color(Color.YELLOW)
-        location(location()?.toVector()
-            ?.rotateZ(Math.toRadians(45.0))
-            ?: return@Circle)
+        location(v.rotateZ(Math.toRadians(45.0)))
     }
-    Circle(location, size = 4.0, vertexes =  100) {
+    Circle(location, size = 4.0, vertexes =  100) { (v) ->
         color(Color.YELLOW)
-        location(location()?.toVector()
-            ?.rotateZ(Math.toRadians(-45.0))
-            ?: return@Circle)
+        location(v.rotateZ(Math.toRadians(-45.0)))
     }
-    Circle(location, size = 4.0, vertexes =  100) {
+    Circle(location, size = 4.0, vertexes =  100) { (v) ->
         color(Color.YELLOW)
-        location(location()?.toVector()
-            ?.rotateX(Math.toRadians(45.0))
-            ?: return@Circle)
+        location(v.rotateX(Math.toRadians(45.0)))
     }
-    Circle(location, size = 4.0, vertexes =  100) {
+    Circle(location, size = 4.0, vertexes =  100) { (v) ->
         color(Color.YELLOW)
-        location(location()?.toVector()
-            ?.rotateX(Math.toRadians(-45.0))
-            ?: return@Circle)
+        location(v.rotateX(Math.toRadians(-45.0)))
     }
-    Circle(location, size = 4.0, vertexes =  100) {
+    Circle(location, size = 4.0, vertexes =  100) { (v) ->
         color(Color.YELLOW)
-        location(location()?.toVector()
-            ?.rotateX(Math.toRadians(90.0))
-            ?.rotateY(Math.toRadians(45.0))
-            ?: return@Circle)
+        location(v.rotateX(Math.toRadians(90.0)).rotateY(Math.toRadians(45.0)))
     }
-    Circle(location, size = 4.0, vertexes =  100) {
+    Circle(location, size = 4.0, vertexes =  100) { (v) ->
         color(Color.YELLOW)
-        location(location()?.toVector()
-            ?.rotateX(Math.toRadians(90.0))
-            ?.rotateY(Math.toRadians(-45.0))
-            ?: return@Circle)
+        location(v.rotateX(Math.toRadians(90.0)).rotateY(Math.toRadians(-45.0)))
     }
 }
 
 fun dynamo(): Update = {
     update {
-        Circle(location, size = 2.0, vertexes =  50) {
-            val loc = location()?.toVector() ?: return@Circle
-            val (x, y, z) = loc
+        Circle(location, size = 2.0, vertexes =  50) { (v) ->
+            val (x, y, z) = v
             val angle = Math.toRadians(time / 25.0)
             color(Color.fromRGB(
                 abs(x) % 255, abs(y) % 255, abs(z) % 255
             ))
-            location(loc.rotateX(angle).rotateY(angle * 2).rotateZ(angle * 3))
+            location(v.rotateX(angle).rotateY(angle * 2).rotateZ(angle * 3))
         }
     }
 }
@@ -259,8 +240,8 @@ fun flyStar(event: PlayerMoveEvent) {
         location = player.location.add(0.0, 9.0, 0.0)
         fun ParticleBuilder.update(player: Player, v: Vector) {
             color(Color.YELLOW)
-            location(v.rotateX((90.0 + location.pitch).radians,
-                center = player.eyeLocation.toVector())
+            location(v
+                .rotateX((90.0 + location.pitch).radians, center = player.eyeLocation)
                 .rotateY(-location.yaw.toDouble().radians)
             )
         }
