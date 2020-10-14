@@ -8,7 +8,7 @@ import xyz.atrius.shadercube.util.component2
 import xyz.atrius.shadercube.util.vec
 
 class Cube(
-    override var point   : Location,
+    override var location: Location,
     override var particle: Particle    = Particle.REDSTONE,
     override val size    : Vector      = 1.vec,
                  step    : Int         = 5,
@@ -21,7 +21,7 @@ class Cube(
     init {
         val (_, h) = size
         val hSize = h * step
-        val p = point.clone()
+        val p = location.clone()
         if (center) p.subtract(0.0, h / 2.0, 0.0)
         for (y in 0..hSize) Square(
             p, particle, size, step, if (y in listOf(0, hSize)) hollow else true, center, y !in listOf(0, hSize) && hollow

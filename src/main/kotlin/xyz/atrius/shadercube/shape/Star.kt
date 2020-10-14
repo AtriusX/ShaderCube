@@ -7,7 +7,7 @@ import xyz.atrius.shadercube.util.radians
 import xyz.atrius.shadercube.util.vec2d
 
 class Star(
-    override var point   : Location,
+    override var location: Location,
     override var particle: Particle    = Particle.REDSTONE,
                  size    : Double      = 1.0,
                  points  : Int         = 5,
@@ -16,7 +16,7 @@ class Star(
     override val block   : Style<Star> = {}
 ) : Shape<Star> {
     override val size: Vector      = size.vec2d
-    override val points: Array<Vector> = Array(points) { point.toVector() }
+    override val points: Array<Vector> = Array(points) { point }
 
     init {
         val angle = (360.0 / points).radians

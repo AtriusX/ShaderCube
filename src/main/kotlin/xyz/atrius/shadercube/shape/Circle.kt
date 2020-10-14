@@ -7,7 +7,7 @@ import xyz.atrius.shadercube.util.radians
 import xyz.atrius.shadercube.util.vec2d
 
 class Circle(
-    override var point   : Location,
+    override var location: Location,
     override var particle: Particle      = Particle.REDSTONE,
                  size    : Double        = 1.0,
                  vertexes: Int           = 32,

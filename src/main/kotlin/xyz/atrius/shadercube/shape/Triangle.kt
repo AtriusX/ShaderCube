@@ -5,7 +5,7 @@ import org.bukkit.Particle
 import org.bukkit.util.Vector
 
 class Triangle(
-    override var point   : Location,
+    override var location: Location,
     override var particle: Particle        = Particle.REDSTONE,
                  base    : Double          = 1.0,
                  height  : Double          = 1.0,
@@ -14,7 +14,7 @@ class Triangle(
     override val block   : Style<Triangle> = {}
 ) : Shape<Triangle> {
     override val size: Vector = Vector(base, 0.0, height)
-    override val points: Array<Vector> = Array(0) { point.toVector() }
+    override val points: Array<Vector> = Array(0) { point }
 
     init {
         val halfW = base / 2

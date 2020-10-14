@@ -1,6 +1,7 @@
 package xyz.atrius.shadercube.data
 
 import org.bukkit.Location
+import org.bukkit.util.Vector
 import xyz.atrius.shadercube.Spatial
 import xyz.atrius.shadercube.shader.Shader
 import xyz.atrius.shadercube.shape.Data
@@ -10,7 +11,7 @@ typealias OrbitData =
     Spatial.(Data<Orbit>) -> Unit
 
 class Orbit(
-    override var point: Location,
+    override var location: Location,
              var size : Double    = 1.0,
              var rate : Double    = 1.0,
     private  val block: OrbitData = {}
@@ -18,7 +19,7 @@ class Orbit(
 
     var offset: Double = 0.0
 
-    override fun update() = block(Data(point.clone().toVector()
+    override fun update() = block(Data(point.clone()
         .rotateY(((System.currentTimeMillis() / 10) * rate + offset).radians, size), this)
     )
 
@@ -44,8 +45,8 @@ class Orbit(
 }
 
 fun Shader.orbit(
-    point: Location  = this.point,
+    point: Vector    = this.point,
     size : Double    = 1.0,
     rate : Double    = 1.0,
     block: OrbitData = {}
-) = Orbit(point, size, rate, block)
+) = Orbit(point.toLocation(world), size, rate, block)

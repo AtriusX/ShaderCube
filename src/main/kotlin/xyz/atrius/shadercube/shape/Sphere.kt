@@ -7,7 +7,7 @@ import xyz.atrius.shadercube.util.radians
 import xyz.atrius.shadercube.util.vec
 
 class Sphere(
-    override var point   : Location,
+    override var location: Location,
     override var particle: Particle      = Particle.REDSTONE,
                  size    : Double        = 1.0,
                  rings   : Int           = 16,
@@ -24,12 +24,12 @@ class Sphere(
     ) : this(point, particle, size, vertexes, vertexes, block)
 
     override val size  : Vector        = size.vec
-    override val points: Array<Vector> = Array(segments * rings) { point.toVector() }
+    override val points: Array<Vector> = Array(segments * rings) { point }
 
     init {
         val angle = (360.0 / segments).radians
         for (i in 1..rings)
-            Circle(point, particle, size, segments) { (v) ->
+            Circle(location, particle, size, segments) { (v) ->
                 location(v
                     .rotateY(angle * (i / 2.0)) // Offset rings so it looks less regular
                     .rotateX(angle * i)         // Rotate the rings to form a sphere
