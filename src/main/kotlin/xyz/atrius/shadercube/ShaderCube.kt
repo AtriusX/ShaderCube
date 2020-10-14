@@ -51,6 +51,17 @@ class ShaderCube : KotlinPlugin(), Listener {
                     }
                     lightning()
                     explosion()
+                    firework {
+                        velocity = Vector(1.0, 0.0, 1.0)
+                        meta {
+                            addEffect {
+                                withColor(Color.AQUA, Color.YELLOW)
+                                withFlicker()
+                                withTrail()
+                            }
+                        }
+                        detonate()
+                    }
                 }
             }
 
