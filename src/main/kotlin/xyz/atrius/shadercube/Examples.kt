@@ -310,11 +310,9 @@ fun apiTest(player: Player) {
                 }
             }
         }
-        update {
+        update(o) {
             point = player.location
             o.point = point
-            o.update()
-
             every(60) {
                 fallingBlock(Material.OBSIDIAN) {
                     velocity = Vector(0.0, 3.0, 0.0)
