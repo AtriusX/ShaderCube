@@ -8,7 +8,10 @@ import org.bukkit.plugin.java.JavaPlugin
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import xyz.atrius.shadercube.shader.animation
+import xyz.atrius.shadercube.shader.frame
+import xyz.atrius.shadercube.shader.lightning
 import xyz.atrius.shadercube.shape.Circle
+import kotlin.math.min
 
 typealias KotlinPlugin =
     JavaPlugin
@@ -27,13 +30,17 @@ class ShaderCube : KotlinPlugin(), Listener {
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
         val player = event.player
-        animation(2, 100) {
-            point = player.location.apply { y = 255.0 }
+        animation(2, 50) {
+            point = player.location.apply { y = 128.0 }
             update {
-                Circle(point, Particle.END_ROD, ((frameDuration - framecount)).toDouble(), 100) {
-                    force(true)
-                    count(3)
-                    extra(0.2)
+                val remainingFrames = frameDuration - framecount
+                Circle(point, Particle.END_ROD, remainingFrames * 2.5, min(120, remainingFrames * 3)) { (v) ->
+                    location(v.rotateY(time / 1000.0))
+                    count(5)
+                    extra(remainingFrames / frameDuration.toDouble() + 0.1)
+                }
+                frame(50) {
+                    lightning(world.getHighestBlockAt(point).location.toVector(), true)
                 }
             }
         }
