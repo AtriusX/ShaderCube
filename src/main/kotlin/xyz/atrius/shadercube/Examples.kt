@@ -80,7 +80,7 @@ fun rayCast(player: Player): Update = {
     val eyes = player.location
     val looking = player.getTargetBlock(50)?.location ?: eyes
     Line(eyes, looking, vertexes = 100) { (_, l) ->
-        val (x, y, z) = l.point.toVector()
+        val (x, y, z) = l.point
         color(Color.fromRGB(
             abs(x) % 255, abs(y) % 255, abs(z) % 255
         ))
@@ -253,20 +253,20 @@ fun flyStar(event: PlayerMoveEvent) {
         return
 
     shader {
-        point = player.location.add(0.0, 9.0, 0.0)
+        location = player.location.add(0.0, 9.0, 0.0)
         fun ParticleBuilder.update(player: Player, v: Vector) {
             color(Color.YELLOW)
-            location(v.rotateX((90.0 + point.pitch).radians,
+            location(v.rotateX((90.0 + location.pitch).radians,
                     center = player.eyeLocation.toVector())
-                    .rotateY(-point.yaw.toDouble().radians)
+                    .rotateY(-location.yaw.toDouble().radians)
             )
         }
         val size = 4.0
-        Circle(point,
+        Circle(location,
             size     = size,
             vertexes = 100
         ) { (v) -> update(player, v) }
-        Star(point,
+        Star(location,
             size   = size,
             points = 3 + abs(sin(time / 2000.0) * 9).toInt(),
             jump   = 1 + abs(sin(time / 500.0) * 3).toInt()
@@ -275,20 +275,20 @@ fun flyStar(event: PlayerMoveEvent) {
 }
 
 fun frameAnimation(player: Player) = animation(frames = 80) {
-    point = player.location.add(0.0, 1.0, 0.0)
+    location = player.location.add(0.0, 1.0, 0.0)
     update {
         before(40) {
-            Circle(point, size = 2.0) {
+            Circle(location, size = 2.0) {
                 color(Color.YELLOW)
             }
         }
         between(20..60) {
-            Cube(point, size = 2.vec) {
+            Cube(location, size = 2.vec) {
                 color(Color.LIME)
             }
         }
         after(40) {
-            Star(point, size = 2.0) {
+            Star(location, size = 2.0) {
                 color(Color.AQUA)
             }
         }
@@ -297,7 +297,7 @@ fun frameAnimation(player: Player) = animation(frames = 80) {
 
 fun apiTest(player: Player) {
     shader {
-        point = player.location
+        location = player.location
         val o = orbit(point, 5.0) { (v, o) ->
             particle(Particle.REDSTONE, v) {
                 color(Color.YELLOW, 5f)
@@ -311,8 +311,8 @@ fun apiTest(player: Player) {
             }
         }
         update(o) {
-            point = player.location
-            o.point = point
+            location = player.location
+            o.location = location
             every(60) {
                 fallingBlock(Material.OBSIDIAN) {
                     velocity = Vector(0.0, 3.0, 0.0)
