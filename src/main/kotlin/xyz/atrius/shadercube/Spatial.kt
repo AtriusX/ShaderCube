@@ -8,21 +8,24 @@ import org.bukkit.util.Vector
 
 interface Spatial {
 
-    var point: Location
+    var location: Location
+
+    val point: Vector
+        get() = location.toVector()
 
     val world: World
-        get() = point.world
+        get() = location.world
 
-    fun Vector.rotateX(angle: Double, offset: Double = 0.0, center: Vector = point.toVector()) =
+    fun Vector.rotateX(angle: Double, offset: Double = 0.0, center: Vector = point) =
         subtract(center).add(Vector(0.0, offset, 0.0)).rotateAroundX(angle).add(center)
 
-    fun Vector.rotateY(angle: Double, offset: Double = 0.0, center: Vector = point.toVector()) =
+    fun Vector.rotateY(angle: Double, offset: Double = 0.0, center: Vector = point) =
         subtract(center).add(Vector(offset, 0.0, 0.0)).rotateAroundY(angle).add(center)
 
-    fun Vector.rotateZ(angle: Double, offset: Double = 0.0, center: Vector = point.toVector()) =
+    fun Vector.rotateZ(angle: Double, offset: Double = 0.0, center: Vector = point) =
         subtract(center).add(Vector(0.0, offset, 0.0)).rotateAroundZ(angle).add(center)
 
-    fun particle(particle: Particle, position: Vector = point.toVector(), block: ParticleBuilder.() -> Unit) {
+    fun particle(particle: Particle, position: Vector = point, block: ParticleBuilder.() -> Unit) {
         val builder = ParticleBuilder(particle).location(position.toLocation(world))
         block(builder)
         builder.spawn()
