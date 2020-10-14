@@ -3,9 +3,10 @@ package xyz.atrius.shadercube.shape
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.util.Vector
+import xyz.atrius.shadercube.shader.Shader
 
 class Triangle(
-    override var point   : Location,
+    override var location: Location,
     override var particle: Particle        = Particle.REDSTONE,
                  base    : Double          = 1.0,
                  height  : Double          = 1.0,
@@ -14,7 +15,7 @@ class Triangle(
     override val block   : Style<Triangle> = {}
 ) : Shape<Triangle> {
     override val size: Vector = Vector(base, 0.0, height)
-    override val points: Array<Vector> = Array(0) { point.toVector() }
+    override val points: Array<Vector> = Array(0) { point }
 
     init {
         val halfW = base / 2
@@ -31,3 +32,13 @@ class Triangle(
         }
     }
 }
+
+fun Shader.triangle(
+    point   : Vector          = this.point,
+    particle: Particle        = Particle.REDSTONE,
+    base    : Double          = 1.0,
+    height  : Double          = 1.0,
+    skew    : Double          = 0.0,
+    vertexes: Int             = 25,
+    block   : Style<Triangle> = {}
+) = Triangle(point.toLocation(world), particle, base, height, skew, vertexes, block)

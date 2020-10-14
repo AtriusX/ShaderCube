@@ -13,8 +13,7 @@ typealias Cancel =
     Shader.() -> Boolean
 
 open class Shader : Spatial {
-
-    override lateinit var point: Location
+    override lateinit var location: Location
 
     val time: Long
         get() = System.currentTimeMillis()
@@ -25,9 +24,9 @@ open class Shader : Spatial {
         get() = time - start
 
     var framecount: Int = 0
-        protected set
+        private set
 
-    protected var taskId: Int = -1
+    private var taskId: Int = -1
 
     lateinit var objects: Array<out Updatable>
 
@@ -60,15 +59,9 @@ open class Shader : Spatial {
 
     companion object {
 
-        internal fun start(rate: Long = 0, shader: Shader.() -> Unit) = Shader().apply {
+        internal fun start(rate: Long, shader: Shader.() -> Unit) = Shader().apply {
             shader(this) // Construct the shader script
-            taskId = schedule.scheduleSyncRepeatingTask(plugin, {
-                if (cancel())
-                    schedule.cancelTask(taskId)
-                update?.invoke(this)
-                objects.forEach(Updatable::update)
-                framecount++
-            }, 0L, rate)
+            update(rate) // Update the shader at the given rate
         }
     }
 }

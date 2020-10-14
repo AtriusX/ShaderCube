@@ -18,7 +18,7 @@ data class SoundData(
 fun Spatial.sound(sound: Sound? = null, block: SoundBuilder) {
     val (point, category, volume, pitch) = SoundData().apply(block)
     world.playSound(
-        point?.toLocation(world) ?: this.point, sound ?: return,
+        point?.toLocation(world) ?: this.location, sound ?: return,
         category, volume.toFloat(), pitch.toFloat()
     )
 }

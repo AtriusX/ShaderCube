@@ -3,10 +3,11 @@ package xyz.atrius.shadercube.shape
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.util.Vector
+import xyz.atrius.shadercube.shader.Shader
 import xyz.atrius.shadercube.util.vec2d
 
 class Square(
-    override var point   : Location,
+    override var location: Location,
     override var particle: Particle      = Particle.REDSTONE,
     override val size    : Vector        = 1.vec2d,
                  step    : Int           = 5,
@@ -15,7 +16,7 @@ class Square(
                  corners : Boolean       = false,
     override val block   : Style<Square> = {}
 ) : Shape<Square> {
-    override val points: Array<Vector> = Array(size.blockX * size.blockZ) { point.toVector() }
+    override val points: Array<Vector> = Array(size.blockX * size.blockZ) { point }
 
     init {
         val w = size.x
@@ -36,3 +37,14 @@ class Square(
                 }
     }
 }
+
+fun Shader.square(
+    point   : Vector        = this.point,
+    particle: Particle      = Particle.REDSTONE,
+    size    : Vector        = 1.vec2d,
+    step    : Int           = 5,
+    hollow  : Boolean       = true,
+    center  : Boolean       = true,
+    corners : Boolean       = false,
+    block   : Style<Square> = {}
+) = Square(point.toLocation(world), particle, size, step, hollow, center, corners, block)

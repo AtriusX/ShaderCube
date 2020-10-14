@@ -19,7 +19,7 @@ interface Shape<T : Shape<T>> : Spatial {
     var particle: Particle
 
     val center: Location
-        get() = point
+        get() = location
 
     val size: Vector
 

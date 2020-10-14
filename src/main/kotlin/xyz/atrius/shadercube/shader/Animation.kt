@@ -12,13 +12,13 @@ class Animation(
         }
 
     companion object {
-        internal fun start(rate: Long = 0, frames: Int = 20, shader: Animation.() -> Unit) = Animation(frames).apply {
+
+        internal fun start(rate: Long, frames: Int, shader: Animation.() -> Unit) = Animation(frames).apply {
             shader(this) // Construct the shader script
-            update(rate)
+            update(rate) // Update the shader at the given rate
         }
     }
 }
-
 
 fun Animation.before(frame: Int, block: Update) =
     between(0..frame, block)

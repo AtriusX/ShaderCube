@@ -31,16 +31,16 @@ class ShaderCube : KotlinPlugin(), Listener {
     fun onJoin(event: PlayerJoinEvent) {
         val player = event.player
         animation(2, 50) {
-            point = player.location.apply { y = 128.0 }
+            location = player.location.apply { y = 128.0 }
             update {
                 val remainingFrames = frameDuration - framecount
-                Circle(point, Particle.END_ROD, remainingFrames * 2.5, min(120, remainingFrames * 3)) { (v) ->
+                Circle(location, Particle.END_ROD, remainingFrames * 2.5, min(120, remainingFrames * 3)) { (v) ->
                     location(v.rotateY(time / 1000.0))
                     count(5)
                     extra(remainingFrames / frameDuration.toDouble() + 0.1)
                 }
                 frame(50) {
-                    lightning(world.getHighestBlockAt(point).location.toVector(), true)
+                    lightning(world.getHighestBlockAt(location).location, true)
                 }
             }
         }
