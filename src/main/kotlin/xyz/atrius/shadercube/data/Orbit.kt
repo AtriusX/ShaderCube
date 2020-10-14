@@ -14,11 +14,11 @@ class Orbit(
              var size : Double    = 1.0,
              var rate : Double    = 1.0,
     private  val block: OrbitData = {}
-) : Spatial {
+) : Spatial, Updatable {
 
     var offset: Double = 0.0
 
-    fun update() = block(Data(point.clone().toVector()
+    override fun update() = block(Data(point.clone().toVector()
         .rotateY(((System.currentTimeMillis() / 10) * rate + offset).radians, size), this)
     )
 
