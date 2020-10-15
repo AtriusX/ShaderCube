@@ -28,7 +28,7 @@ open class Shader protected constructor(): Spatial {
 
     private var taskId: Int = -1
 
-    lateinit var objects: Array<out Updatable>
+    private var objects: Array<out Updatable> = arrayOf()
 
     var update: Update? = null
 
