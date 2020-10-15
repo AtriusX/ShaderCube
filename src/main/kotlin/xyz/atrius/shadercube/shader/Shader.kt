@@ -12,7 +12,7 @@ typealias Update =
 typealias Cancel =
     Shader.() -> Boolean
 
-open class Shader : Spatial {
+open class Shader protected constructor(): Spatial {
     override lateinit var location: Location
 
     val time: Long
