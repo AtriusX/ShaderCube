@@ -2,7 +2,6 @@ package xyz.atrius.shadercube
 
 import com.destroystokyo.paper.ParticleBuilder
 import org.bukkit.Location
-import org.bukkit.Particle
 import org.bukkit.World
 import org.bukkit.util.Vector
 
@@ -33,12 +32,6 @@ interface Spatial {
 
     fun Vector.rotateZ(angle: Double, offset: Double = 0.0, center: Location) =
         rotateZ(angle, offset, center.toVector())
-
-    fun particle(particle: Particle, position: Location, block: ParticleBuilder.() -> Unit) =
-        ParticleBuilder(particle).location(position).also(block).spawn()
-
-    fun particle(particle: Particle, position: Vector = point, block: ParticleBuilder.() -> Unit) =
-        particle(particle, position.toLocation(world), block)
 
     fun ParticleBuilder.location(vector: Vector) =
         location(vector.toLocation(world))

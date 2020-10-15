@@ -1,4 +1,5 @@
 package xyz.atrius.shadercube.shader
+
 class Animation(
     val frameDuration: Int
 ) : Shader() {
