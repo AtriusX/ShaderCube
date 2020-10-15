@@ -15,7 +15,7 @@ class Circle(
     override val block   : Style<Circle> = {}
 ) : Shape<Circle> {
     override val size  : Vector = size.vec2d
-    override val points: Array<Vector> = Array(vertexes) { center.toVector() }
+    override val points: Array<Vector> = Array(vertexes) { point }
 
     init {
         val angle = (360.0 / vertexes).radians

@@ -16,7 +16,7 @@ class Star(
                  vertexes: Int         = 25,
     override val block   : Style<Star> = {}
 ) : Shape<Star> {
-    override val size: Vector      = size.vec2d
+    override val size  : Vector        = size.vec2d
     override val points: Array<Vector> = Array(points) { point }
 
     init {
