@@ -16,6 +16,7 @@ import xyz.atrius.shadercube.shape.*
 import xyz.atrius.shadercube.util.*
 import kotlin.math.abs
 import kotlin.math.cos
+import kotlin.math.min
 import kotlin.math.sin
 import kotlin.random.Random
 
@@ -320,5 +321,22 @@ fun apiTest(player: Player) {
             }
         }
         cancel { !player.isOnline }
+    }
+}
+
+fun sonar(player: Player) {
+    animation(2, 50) {
+        location = player.location.apply { y = 128.0 }
+        update {
+            val remainingFrames = frameDuration - framecount
+            Circle(location, Particle.END_ROD, remainingFrames * 2.5, min(120, remainingFrames * 3)) { (v) ->
+                location(v.rotateY(time / 1000.0))
+                count(5)
+                extra(remainingFrames / frameDuration.toDouble() + 0.1)
+            }
+            frame(50) {
+                lightning(world.getHighestBlockAt(location).location, true)
+            }
+        }
     }
 }

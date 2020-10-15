@@ -1,17 +1,16 @@
 package xyz.atrius.shadercube
 
-import org.bukkit.Particle
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
-import xyz.atrius.shadercube.shader.animation
-import xyz.atrius.shadercube.shader.frame
-import xyz.atrius.shadercube.shader.lightning
-import xyz.atrius.shadercube.shape.Circle
-import kotlin.math.min
+import xyz.atrius.shadercube.shader.shader
+import xyz.atrius.shadercube.shape.circle
+import xyz.atrius.shadercube.util.hsb
+import kotlin.math.cos
+import kotlin.math.sin
 
 typealias KotlinPlugin =
     JavaPlugin
@@ -30,19 +29,20 @@ class ShaderCube : KotlinPlugin(), Listener {
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
         val player = event.player
-        animation(2, 50) {
-            location = player.location.apply { y = 128.0 }
+        shader {
             update {
-                val remainingFrames = frameDuration - framecount
-                Circle(location, Particle.END_ROD, remainingFrames * 2.5, min(120, remainingFrames * 3)) { (v) ->
-                    location(v.rotateY(time / 1000.0))
-                    count(5)
-                    extra(remainingFrames / frameDuration.toDouble() + 0.1)
+                location = player.location.apply {
+                    y += sin(time / 500.0) * 1.5
                 }
-                frame(50) {
-                    lightning(world.getHighestBlockAt(location).location, true)
+                circle(
+                    size = 4 + cos(time / 500.0) * 3,
+                    vertexes = 75
+                ) { (v) ->
+                    location(v.rotateY(time / 1500.0))
+                    color(hsb(framecount / 200f, 0.75f, 1f), 2f)
                 }
             }
+            cancel { !player.isOnline }
         }
     }
 }
