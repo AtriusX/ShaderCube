@@ -25,9 +25,9 @@ class Line(
     override val points: Array<Vector> = Array(vertexes) { point }
 
     init {
-        val pos = point
+        val pos = location
         for (i in points.indices) {
-            points[i] = pos
+            points[i] = pos.toVector()
             particle(particle, pos) {
                 block(Data(point, this@Line))
             }
