@@ -4,10 +4,12 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.util.Vector
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import xyz.atrius.shadercube.shader.shader
 import xyz.atrius.shadercube.shape.circle
+import xyz.atrius.shadercube.shape.star
 import xyz.atrius.shadercube.util.hsb
 import kotlin.math.cos
 import kotlin.math.sin
@@ -26,6 +28,7 @@ class ShaderCube : KotlinPlugin(), Listener {
         }
     }
 
+
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
         val player = event.player
@@ -40,6 +43,15 @@ class ShaderCube : KotlinPlugin(), Listener {
                 ) { (v) ->
                     location(v.rotateY(time / 1500.0))
                     color(hsb(framecount / 200f, 0.75f, 1f), 2f)
+                }
+                star(
+                    size = 10.0,
+                    vertexes = 100,
+                    points = 9,
+                    jump = 5
+                ) { (v) ->
+                    location(v.rotateY(time / 1500.0).add(Vector(0.0, 10.0, 0.0)))
+                    color(hsb(framecount * 0.005f, 0.75f, 1f))
                 }
             }
             cancel { !player.isOnline }
