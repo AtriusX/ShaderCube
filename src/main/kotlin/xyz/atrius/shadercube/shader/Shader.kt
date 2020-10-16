@@ -1,5 +1,6 @@
 package xyz.atrius.shadercube.shader
 
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import xyz.atrius.shadercube.Spatial
 import xyz.atrius.shadercube.data.Updatable
@@ -43,7 +44,12 @@ open class Shader protected constructor(): Spatial {
         taskId = schedule.scheduleSyncRepeatingTask(plugin, {
             if (cancel())
                 schedule.cancelTask(taskId)
-            update?.invoke(this)
+            try {
+                update?.invoke(this)
+            } catch(e: Exception) {
+                Bukkit.getLogger().warning(e.message)
+                schedule.cancelTask(taskId)
+            }
             objects.forEach(Updatable::update)
             framecount++
         }, 0L, rate)
