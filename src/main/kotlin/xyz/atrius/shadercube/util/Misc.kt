@@ -1,12 +1,8 @@
 package xyz.atrius.shadercube.util
 
-import com.destroystokyo.paper.ParticleBuilder
 import org.bukkit.Color
-import org.bukkit.Location
-import org.bukkit.Particle
-import org.bukkit.util.Vector
-import xyz.atrius.shadercube.shader.Shader
 import java.awt.Color.HSBtoRGB
+import java.awt.Color.RGBtoHSB
 
 val Double.radians: Double
     get() = Math.toRadians(this)
@@ -21,8 +17,16 @@ fun hsb(hue: Float, saturation: Float, brightness: Float) = Color.fromRGB(
     HSBtoRGB(hue, saturation, brightness) and 0xffffff
 )
 
-fun particle(particle: Particle = Particle.REDSTONE, position: Location, block: ParticleBuilder.() -> Unit = {}) =
-    ParticleBuilder(particle).location(position).also(block).spawn()
+fun Color.toHSB(): FloatArray =
+    RGBtoHSB(red, green, blue, FloatArray(3))
 
-fun Shader.particle(particle: Particle = Particle.REDSTONE, position: Vector = point, block: ParticleBuilder.() -> Unit = {}) =
-        particle(particle, position.toLocation(world), block)
+val Color.compliment: Color
+    get() = compliments()[0]
+
+fun Color.compliments(count: Int = 1): Array<Color> = toHSB().run {
+    val angle = 1f / (count + 1)
+    Array(count) { hsb(this[0] + angle * (it + 1), this[1], this[2]) }
+}
+
+fun Color.plusCompliments(count: Int = 1): Array<Color> =
+    arrayOf(this, *compliments(count))
