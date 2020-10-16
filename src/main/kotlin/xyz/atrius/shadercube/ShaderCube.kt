@@ -1,18 +1,16 @@
 package xyz.atrius.shadercube
 
+import org.bukkit.Color
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
-import org.bukkit.util.Vector
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import xyz.atrius.shadercube.shader.shader
 import xyz.atrius.shadercube.shape.circle
-import xyz.atrius.shadercube.shape.star
-import xyz.atrius.shadercube.util.hsb
-import kotlin.math.cos
-import kotlin.math.sin
+import xyz.atrius.shadercube.util.plusCompliments
+import xyz.atrius.shadercube.util.radians
 
 typealias KotlinPlugin =
     JavaPlugin
@@ -33,25 +31,28 @@ class ShaderCube : KotlinPlugin(), Listener {
     fun onJoin(event: PlayerJoinEvent) {
         val player = event.player
         shader {
+            val colors = Color.FUCHSIA.plusCompliments(10)
             update {
-                location = player.location.apply {
-                    y += sin(time / 500.0) * 1.5
+                val loc  = player.location
+                location = loc.clone().apply {
+                    y += (framecount.toDouble() / 4.0 % 4.25) - 1
+                }
+                val size = when {
+                    location.y >=loc.y + 2 -> 1 - (location.y - (loc.y + 2.0))
+                    location.y < loc.y     -> 1 - (loc.y - location.y)
+                    else                   -> 1.0
                 }
                 circle(
-                    size = 4 + cos(time / 500.0) * 3,
-                    vertexes = 75
+                    vertexes = 15,
+                    size     = size
                 ) { (v) ->
-                    location(v.rotateY(time / 1500.0))
-                    color(hsb(framecount / 200f, 0.75f, 1f), 2f)
-                }
-                star(
-                    size = 10.0,
-                    vertexes = 100,
-                    points = 9,
-                    jump = 5
-                ) { (v) ->
-                    location(v.rotateY(time / 1500.0).add(Vector(0.0, 10.0, 0.0)))
-                    color(hsb(framecount * 0.005f, 0.75f, 1f))
+                    location(v.rotateY(time / 250.0).apply {
+                        if (player.isGliding) {
+                            rotateX((90.0 + location.pitch).radians, center = player.eyeLocation)
+                            rotateY(-location.yaw.toDouble().radians)
+                        }
+                    })
+                    color(colors[(framecount / 17) % colors.size])
                 }
             }
             cancel { !player.isOnline }

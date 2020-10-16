@@ -340,3 +340,30 @@ fun sonar(player: Player) {
         }
     }
 }
+
+fun hsbTest(player: Player) {
+    shader {
+        update {
+            location = player.location.apply {
+                y += sin(time / 500.0) * 1.5
+            }
+            circle(
+                size = 4 + cos(time / 500.0) * 3,
+                vertexes = 15
+            ) { (v) ->
+                location(v.rotateY(time / 1000.0))
+                color(hsb(framecount / 200f, 0.75f, 1f), 2f)
+            }
+            star(
+                size = 10.0,
+                vertexes = 100,
+                points = 9,
+                jump = 5
+            ) { (v) ->
+                location(v.rotateY(time / 1500.0).add(Vector(0.0, 10.0, 0.0)))
+                color(hsb(framecount / 400f, 0.75f, 1f))
+            }
+        }
+        cancel { !player.isOnline }
+    }
+}
