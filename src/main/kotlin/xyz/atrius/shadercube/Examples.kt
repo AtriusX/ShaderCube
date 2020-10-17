@@ -367,3 +367,33 @@ fun hsbTest(player: Player) {
         cancel { !player.isOnline }
     }
 }
+
+fun rainbowCrystal(player: Player) {
+    shader {
+        val colors = Color.FUCHSIA.plusCompliments(10)
+        update {
+            val loc  = player.location
+            location = loc.clone().apply {
+                y += (framecount / 4.0 % 4.25) - 1
+            }
+            val size = when {
+                location.y > loc.y + 2 -> 1 - (location.y - (loc.y + 2.0))
+                location.y < loc.y     -> 1 - (loc.y - location.y)
+                else                   -> 1.0
+            }
+            circle(
+                vertexes = 15,
+                size     = size
+            ) { (v) ->
+                location(v.rotateY(time / 250.0).apply {
+                    if (player.isGliding) {
+                        rotateX((90.0 + location.pitch).radians, center = player.eyeLocation)
+                        rotateY(-location.yaw.toDouble().radians)
+                    }
+                })
+                color(colors[(framecount / 17) % colors.size])
+            }
+        }
+        cancel { !player.isOnline }
+    }
+}
