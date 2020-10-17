@@ -59,6 +59,13 @@ fun Color.invert(): Color = Color.fromRGB(
     255 - red, 255 - green, 255 - blue
 )
 
+@JvmName("blendChroma")
+fun Color.blend(other: Color, amount: Double = 1.0, mode: ChromaFunction): Color = mode(other).also {
+    red = lerp(this.red, it.red, amount)
+    green = lerp(this.green, it.green, amount)
+    blue = lerp(this.blue, it.blue, amount)
+}
+
 fun Color.blend(other: Color, amount: Double = 1.0, mode: BlendFunction): Color = Color.fromRGB(
     standardizeAndCalc(red, other.red, amount, mode),
     standardizeAndCalc(green, other.green, amount, mode),

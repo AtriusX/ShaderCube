@@ -1,5 +1,6 @@
 package xyz.atrius.shadercube.util
 
+import org.bukkit.Color
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -7,6 +8,8 @@ import kotlin.math.min
 typealias BlendFunction =
     Double.(Double) -> Double
 
+typealias ChromaFunction =
+    Color.(Color) -> Color
 object Blend {
 
     private const val MIN_VALUE = 1.0 / 255
