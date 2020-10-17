@@ -55,6 +55,10 @@ fun Color.gradient(vararg colors: Color, points: Int = 3): Array<Color> {
 fun Color.gradient(vararg data: Pair<Color, Int>): Array<Color> =
     data.flatMap { gradient(it.first, it.second).toList() }.distinct().toTypedArray()
 
+fun Color.invert(): Color = Color.fromRGB(
+    255 - red, 255 - green, 255 - blue
+)
+
 fun Color.blend(other: Color, amount: Double = 1.0, mode: BlendFunction): Color = Color.fromRGB(
     standardizeAndCalc(red, other.red, amount, mode),
     standardizeAndCalc(green, other.green, amount, mode),
