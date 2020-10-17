@@ -13,6 +13,7 @@ import xyz.atrius.shadercube.shader.shader
 import xyz.atrius.shadercube.shape.line
 import xyz.atrius.shadercube.util.Blend
 import xyz.atrius.shadercube.util.blend
+import xyz.atrius.shadercube.util.gradient
 import xyz.atrius.shadercube.util.plusGradients
 
 typealias KotlinPlugin =
@@ -35,7 +36,7 @@ class ShaderCube : KotlinPlugin(), Listener {
         val player = event.player
         shader {
             location = Location(player.world, 0.0, 90.0, 0.0)
-            val gradients = Color.RED.plusGradients(Color.LIME, Color.WHITE, points = 15)
+            val gradients = Color.RED.gradient(Color.LIME, Color.WHITE, points = 15)
             val blends = arrayOf(Blend.ADD, Blend.SUBTRACT, Blend.MULTIPLY, Blend.DIVIDE)
             update {
                 var g = 0
