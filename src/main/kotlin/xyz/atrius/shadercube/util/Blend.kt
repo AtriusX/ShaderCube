@@ -41,4 +41,8 @@ object Blend {
         if (it > 0.5) 1.0 - (1.0 - 2 * (it - 0.5)) * (1.0 - this)
         else          2 * this * it
     }
+
+    val GRAIN_EXTRACT: BlendFunction = { this - it + 0.5 }
+
+    val GRAIN_MERGE: BlendFunction = { this + it - 0.5 }
 }
