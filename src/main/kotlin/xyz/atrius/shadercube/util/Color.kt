@@ -23,6 +23,28 @@ fun hsb(hue: Float, saturation: Float, brightness: Float): Color = Color.fromRGB
 fun Color.toHSB(): FloatArray =
     RGBtoHSB(red, green, blue, FloatArray(3))
 
+fun yuv(y: Int, u: Int, v: Int): Color = yuv(
+    y / 255f, (u - 128) / 51f, (v - 128) / 51f
+)
+
+fun yuv(y: Float, u: Float, v: Float): Color {
+    val r = ((y + 0.000 * u + 1.140 * v) * 255)
+    val g = ((y - 0.396 * u - 0.581 * v) * 255)
+    val b = ((y + 2.029 * u + 0.000 * v) * 255)
+    return Color.fromRGB(
+        clamp(0, 255, r.toInt()),
+        clamp(0, 255, g.toInt()),
+        clamp(0, 255, b.toInt())
+    )
+}
+
+fun Color.toYUV(): IntArray {
+    val y  = (0.257f * red)  + (0.504f * green) + (0.098f * blue) + 16
+    val cR = (0.439f * red)  - (0.368f * green) - (0.071f * blue) + 128
+    val cB = -(0.148f * red) - (0.291f * green) + (0.439f * blue) + 128
+    return intArrayOf(y.toInt(), cR.toInt(), cB.toInt())
+}
+
 val Color.compliment: Color
     get() = compliments()[0]
 
