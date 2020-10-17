@@ -65,4 +65,16 @@ object Blend {
     val GRAIN_EXTRACT: BlendFunction = { this - it + 0.5 }
 
     val GRAIN_MERGE: BlendFunction = { this + it - 0.5 }
+
+    val AND: BlendFunction = { ((this * 255).toInt() and (it * 255).toInt()) / 255.0 }
+
+    val OR: BlendFunction = { ((this * 255).toInt() or (it * 255).toInt()) / 255.0 }
+
+    val XOR: BlendFunction = { ((this * 255).toInt() xor (it * 255).toInt()) / 255.0 }
+
+    val SHL: BlendFunction = { ((this * 255).toInt() shl (it * 255).toInt()) / 255.0 }
+
+    val SHR: BlendFunction = { ((this * 255).toInt() shr (it * 255).toInt()) / 255.0 }
+
+    val USHR: BlendFunction = { ((this * 255).toInt() ushr  (it * 255).toInt()) / 255.0 }
 }
