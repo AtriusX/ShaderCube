@@ -36,8 +36,7 @@ class ShaderCube : KotlinPlugin(), Listener {
                 location = player.location.add(0.0, 30.0, 0.0)
                 val dolphin = entity<Dolphin>(point)  {
                     removeWhenFarAway = false
-                    maximumAir = Int.MAX_VALUE
-                    remainingAir = maximumAir
+                    isInvulnerable = true
                 } ?: return@shader
                 update {
                     dolphin.velocity = dolphin.location.direction.divide(10.vec)
