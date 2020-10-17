@@ -47,6 +47,21 @@ object Blend {
         else          2 * this * it
     }
 
+    val VIVID_LIGHT: BlendFunction = {
+        if (this < 0.5) 1.0 - (1.0 - it) / (2 * this)
+        else            it / (2 * (1.0 - this))
+    }
+
+    val LINEAR_LIGHT: BlendFunction = {
+        it * if (it > 0.5) (this + 2 * (it - 0.5))
+        else               this + 2 * it - 1.0
+    }
+
+    val PIN_LIGHT: BlendFunction = {
+        if (it > 0.5) max(this, 2 * (it - 0.5))
+        else          min(this, 2 * it)
+    }
+
     val GRAIN_EXTRACT: BlendFunction = { this - it + 0.5 }
 
     val GRAIN_MERGE: BlendFunction = { this + it - 0.5 }
