@@ -28,9 +28,11 @@ object Blend {
 
     val SCREEN: BlendFunction = { 1.0 - (1.0 - it) * (1.0 - this) }
 
-    val DODGE: BlendFunction = { this / max(1.0 - it, MIN_VALUE) }
+    val DODGE: BlendFunction = { this / (1.0 - it) }
 
     val DIFFERENCE: BlendFunction = { abs(this - it) }
+
+    val EXCLUSION: BlendFunction = { 0.5 - 2 * (this - 0.5) * (it - 0.5 ) }
 
     val LIGHTEN_ONLY: BlendFunction = { max(this, it) }
 
