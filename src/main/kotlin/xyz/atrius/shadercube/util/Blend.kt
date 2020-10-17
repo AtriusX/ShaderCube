@@ -1,6 +1,8 @@
 package xyz.atrius.shadercube.util
 
+import kotlin.math.abs
 import kotlin.math.max
+import kotlin.math.min
 
 typealias BlendFunction =
     Double.(Double) -> Double
@@ -21,7 +23,22 @@ object Blend {
 
     val LINEAR_BURN: BlendFunction = { this + it - 1 }
 
-    val SCREEN: BlendFunction = { 1.0 - (1.0 - this) * (1.0 - it) }
+    val SCREEN: BlendFunction = { 1.0 - (1.0 - it) * (1.0 - this) }
 
     val DODGE: BlendFunction = { this / max(1.0 - it, MIN_VALUE) }
+
+    val DIFFERENCE: BlendFunction = { abs(this - it) }
+
+    val LIGHTEN_ONLY: BlendFunction = { max(this, it) }
+
+    val DARKEN_ONLY: BlendFunction = { min(this, it) }
+
+    val OVERLAY: BlendFunction = { this * (this + 2 * it * (1.0 - this)) }
+
+    val SOFT_LIGHT: BlendFunction = { ((1.0 - it) * this + SCREEN(it)) * this }
+
+    val HARD_LIGHT: BlendFunction = {
+        if (it > 0.5) 1.0 - (1.0 - 2 * (it - 0.5)) * (1.0 - this)
+        else          2 * this * it
+    }
 }
