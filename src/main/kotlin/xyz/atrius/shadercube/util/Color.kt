@@ -1,22 +1,27 @@
 package xyz.atrius.shadercube.util
 
 import org.bukkit.Color
+import java.awt.Color.HSBtoRGB
+import java.awt.Color.RGBtoHSB
 
-operator fun Color.component1() = red
+operator fun Color.component1(): Int = red
 
-operator fun Color.component2() = green
+operator fun Color.component2(): Int = green
 
-operator fun Color.component3() = blue
+operator fun Color.component3(): Int = blue
 
-fun rgb(r: Int, g: Int, b: Int) =
-        Color.fromRGB(r, g, b)
+fun rgb(r: Int, g: Int, b: Int): Color =
+    Color.fromRGB(r, g, b)
 
-fun hsb(hue: Float, saturation: Float, brightness: Float) = Color.fromRGB(
-        java.awt.Color.HSBtoRGB(hue, saturation, brightness) and 0xffffff
+fun rgb(hex: Int): Color =
+    Color.fromRGB(hex)
+
+fun hsb(hue: Float, saturation: Float, brightness: Float): Color = Color.fromRGB(
+    HSBtoRGB(hue, saturation, brightness) and 0xffffff
 )
 
 fun Color.toHSB(): FloatArray =
-        java.awt.Color.RGBtoHSB(red, green, blue, FloatArray(3))
+    RGBtoHSB(red, green, blue, FloatArray(3))
 
 val Color.compliment: Color
     get() = compliments()[0]
@@ -27,12 +32,12 @@ fun Color.compliments(count: Int = 1): Array<Color> = toHSB().run {
 }
 
 fun Color.plusCompliments(count: Int = 1): Array<Color> =
-        arrayOf(this, *compliments(count))
+    arrayOf(this, *compliments(count))
 
 fun Color.gradient(color: Color, points: Int = 3): Array<Color> {
     val (r, g, b) = color
     val inc = 1.0 / points
-    return arrayOf(*Array(points) {
+    return arrayOf(this, *Array(points) {
         val p = (it + 1) * inc
         Color.fromRGB(lerp(red, r, p), lerp(green, g, p), lerp(blue, b, p)
         )
@@ -40,16 +45,23 @@ fun Color.gradient(color: Color, points: Int = 3): Array<Color> {
 
 }
 
-fun Color.plusGradient(color: Color, points: Int = 3) =
-    arrayOf(this, *gradient(color, points))
-
-fun Color.gradients(vararg colors: Color, points: Int = 3): Array<Color> {
+fun Color.gradient(vararg colors: Color, points: Int = 3): Array<Color> {
     val cPoints = arrayOf(this, *colors)
     val values  = arrayListOf<Color>()
     for (i in 1 until cPoints.size)
         values += cPoints[i - 1].gradient(cPoints[i], points)
-    return values.toTypedArray()
+    return arrayOf(this, *values.toTypedArray())
 }
 
-fun Color.plusGradients(vararg colors: Color, points: Int = 3) =
-    arrayOf(this, *gradients(*colors, points = points))
+fun Color.gradient(vararg data: Pair<Color, Int>): Array<Color> =
+    data.flatMap { gradient(it.first, it.second).toList() }.distinct().toTypedArray()
+
+fun Color.blend(other: Color, amount: Double = 1.0, mode: BlendFunction): Color = Color.fromRGB(
+    standardizeAndCalc(red, other.red, amount, mode),
+    standardizeAndCalc(green, other.green, amount, mode),
+    standardizeAndCalc(blue, other.blue, amount, mode)
+)
+
+private fun standardizeAndCalc(red: Int, r: Int, amount: Double, mode: BlendFunction): Int {
+    return (clamp(0.0, 1.0, lerp(red.toDouble(), mode(red / 255.0, r / 255.0), amount)) * 255).toInt()
+}
