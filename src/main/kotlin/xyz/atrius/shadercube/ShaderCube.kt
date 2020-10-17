@@ -1,19 +1,18 @@
 package xyz.atrius.shadercube
 
-import org.bukkit.Color
 import org.bukkit.Location
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
-import org.bukkit.util.Vector
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import xyz.atrius.shadercube.shader.shader
-import xyz.atrius.shadercube.shape.line
-import xyz.atrius.shadercube.util.Blend
-import xyz.atrius.shadercube.util.blend
-import xyz.atrius.shadercube.util.gradient
+import xyz.atrius.shadercube.shape.square
+import xyz.atrius.shadercube.util.vec
+import xyz.atrius.shadercube.util.yuv
+import kotlin.math.cos
+import kotlin.math.sin
 
 typealias KotlinPlugin =
     JavaPlugin
@@ -35,15 +34,13 @@ class ShaderCube : KotlinPlugin(), Listener {
         val player = event.player
         shader {
             location = Location(player.world, 0.0, 90.0, 0.0)
-            val gradients = Color.RED.gradient(Color.LIME, Color.WHITE, points = 25)
-            val blends = arrayOf(Blend.ADD, Blend.SUBTRACT, Blend.MULTIPLY, Blend.DIVIDE)
             update {
-                var g = 0
-                line(
-                    point2   = point.add(Vector(10.0, 0.0, 10.0)),
-                    vertexes = gradients.size
+                square(
+                    size = 5.vec,
+                    hollow = false,
+                    step = 3
                 ) {
-                    color(gradients[g++].blend(Color.ORANGE, mode = Blend.LUMINOSITY))
+                    color(yuv(sin(framecount / 10f), sin(framecount / 20f) * 5, cos(framecount / 30f) * 5))
                 }
             }
         }
