@@ -10,6 +10,7 @@ typealias BlendFunction =
 
 typealias ChromaFunction =
     Color.(Color) -> Color
+
 object Blend {
 
     private const val MIN_VALUE = 1.0 / 255
@@ -77,4 +78,28 @@ object Blend {
     val SHR: BlendFunction = { ((this * 255).toInt() shr (it * 255).toInt()) / 255.0 }
 
     val USHR: BlendFunction = { ((this * 255).toInt() ushr  (it * 255).toInt()) / 255.0 }
+
+    val HUE: ChromaFunction = {
+        val (_, b, c) = toHSB()
+        val (a)       = it.toHSB()
+        hsb(a, b, c)
+    }
+
+    val SATURATION: ChromaFunction = {
+        val (a, _, c) = toHSB()
+        val (_, b)    = it.toHSB()
+        hsb(a, b, c)
+    }
+
+    val COLOR: ChromaFunction = {
+        val (_, _, c) = toHSB()
+        val (a, b)    = it.toHSB()
+        hsb(a, b, c)
+    }
+
+    val LUMINOSITY: ChromaFunction = {
+        val (a, b, _) = toHSB()
+        val (_, _, c) = it.toHSB()
+        hsb(a, b, c)
+    }
 }
