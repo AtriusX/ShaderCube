@@ -35,7 +35,7 @@ class ShaderCube : KotlinPlugin(), Listener {
         val player = event.player
         shader {
             location = Location(player.world, 0.0, 90.0, 0.0)
-            val gradients = Color.RED.gradient(Color.LIME, Color.WHITE, points = 15)
+            val gradients = Color.RED.gradient(Color.LIME, Color.WHITE, points = 25)
             val blends = arrayOf(Blend.ADD, Blend.SUBTRACT, Blend.MULTIPLY, Blend.DIVIDE)
             update {
                 var g = 0
@@ -43,7 +43,7 @@ class ShaderCube : KotlinPlugin(), Listener {
                     point2   = point.add(Vector(10.0, 0.0, 10.0)),
                     vertexes = gradients.size
                 ) {
-                    color(gradients[g++].blend(Color.ORANGE, mode = blends[framecount / 60 % blends.size]))
+                    color(gradients[g++].blend(Color.ORANGE, mode = Blend.LUMINOSITY))
                 }
             }
         }
