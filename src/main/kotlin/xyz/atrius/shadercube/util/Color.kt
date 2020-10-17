@@ -42,7 +42,6 @@ fun Color.gradient(color: Color, points: Int = 3): Array<Color> {
         Color.fromRGB(lerp(red, r, p), lerp(green, g, p), lerp(blue, b, p)
         )
     }, color)
-
 }
 
 fun Color.gradient(vararg colors: Color, points: Int = 3): Array<Color> {
@@ -62,6 +61,5 @@ fun Color.blend(other: Color, amount: Double = 1.0, mode: BlendFunction): Color 
     standardizeAndCalc(blue, other.blue, amount, mode)
 )
 
-private fun standardizeAndCalc(red: Int, r: Int, amount: Double, mode: BlendFunction): Int {
-    return (clamp(0.0, 1.0, lerp(red.toDouble(), mode(red / 255.0, r / 255.0), amount)) * 255).toInt()
-}
+private fun standardizeAndCalc(red: Int, r: Int, amount: Double, mode: BlendFunction): Int =
+    (clamp(0.0, 1.0, lerp(red.toDouble(), mode(red / 255.0, r / 255.0), amount)) * 255).toInt()
