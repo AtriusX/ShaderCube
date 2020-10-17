@@ -17,7 +17,6 @@ import kotlin.math.sin
 typealias KotlinPlugin =
     JavaPlugin
 
-@Suppress("unused")
 class ShaderCube : KotlinPlugin(), Listener {
 
     override fun onEnable() {
