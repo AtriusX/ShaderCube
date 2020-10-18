@@ -9,6 +9,7 @@ import org.koin.dsl.module
 import xyz.atrius.shadercube.shader.Text
 import xyz.atrius.shadercube.shader.shader
 import xyz.atrius.shadercube.util.hsb
+import xyz.atrius.shadercube.util.radians
 import xyz.atrius.shadercube.util.vec
 
 typealias KotlinPlugin =
@@ -28,12 +29,14 @@ class ShaderCube : KotlinPlugin(), Listener {
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
         val player = event.player
-        shader(3) {
+        shader {
             location = player.location
             update {
-                Text(location, "Hello World!", size = 0.75.vec) { (v) ->
-                    location(v.rotateY(time / 8000.0))
-                    color(hsb(framecount / 400f, 1f, 1f))
+                Text(location, "Hello World!", size = 0.3.vec) { (v) ->
+                    location(v
+                        .rotateX((-player.location.pitch.toDouble()).radians)
+                        .rotateY((180 - player.location.yaw.toDouble()).radians))
+                    color(hsb(framecount / 400f, 1f, 1f), 0.3f)
                 }
             }
             cancel { !player.isOnline }
