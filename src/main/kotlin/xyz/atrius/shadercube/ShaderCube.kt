@@ -26,8 +26,7 @@ class ShaderCube : KotlinPlugin(), Listener {
             modules(module { single { this@ShaderCube } })
         }
     }
-
-
+    
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
         val player = event.player
