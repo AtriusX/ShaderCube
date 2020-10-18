@@ -387,7 +387,6 @@ fun skyDolphins(player: Player) {
                     extra(0.0)
                 }
             }
-            Text(location, "Hello World!", hsb(framecount / 400f, 1f, 1f))
         }
         cancel { !dolphin.isValid }
     }
