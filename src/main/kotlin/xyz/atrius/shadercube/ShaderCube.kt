@@ -1,6 +1,5 @@
 package xyz.atrius.shadercube
 
-import org.bukkit.Location
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
@@ -8,11 +7,10 @@ import org.bukkit.plugin.java.JavaPlugin
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
 import xyz.atrius.shadercube.shader.shader
-import xyz.atrius.shadercube.shape.square
+import xyz.atrius.shadercube.shader.text
+import xyz.atrius.shadercube.util.hsb
+import xyz.atrius.shadercube.util.radians
 import xyz.atrius.shadercube.util.vec
-import xyz.atrius.shadercube.util.yuv
-import kotlin.math.cos
-import kotlin.math.sin
 
 typealias KotlinPlugin =
     JavaPlugin
@@ -26,19 +24,22 @@ class ShaderCube : KotlinPlugin(), Listener {
             modules(module { single { this@ShaderCube } })
         }
     }
-    
+
     @EventHandler
     fun onJoin(event: PlayerJoinEvent) {
         val player = event.player
+        val text = """
+            |Hello World!
+            |How are you today?
+        """.trimMargin()
         shader {
-            location = Location(player.world, 0.0, 90.0, 0.0)
+            location = player.location
             update {
-                square(
-                    size = 5.vec,
-                    hollow = false,
-                    step = 3
-                ) {
-                    color(yuv(sin(framecount / 10f), sin(framecount / 20f) * 5, cos(framecount / 30f) * 5))
+                text(point, text, size = 0.3.vec) { (v, t) ->
+                    location(v
+                        .rotateX((-player.location.pitch.toDouble()).radians, center = t.point)
+                        .rotateY((180 - player.location.yaw.toDouble()).radians))
+                    color(hsb(framecount / 400f, 1f, 1f), 0.3f)
                 }
             }
         }

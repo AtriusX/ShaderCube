@@ -35,7 +35,7 @@ class Cube(
 }
 
 fun Shader.cube(
-    point: Vector = this.point,
+    point   : Vector        = this.point,
     particle: Particle      = Particle.REDSTONE,
     size    : Vector        = 1.vec,
     step    : Int           = 5,

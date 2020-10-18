@@ -5,6 +5,7 @@ import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
+import org.bukkit.entity.Dolphin
 import org.bukkit.entity.Player
 import org.bukkit.entity.Spider
 import org.bukkit.event.player.PlayerMoveEvent
@@ -372,18 +373,18 @@ fun rainbowCrystal(player: Player) {
     shader {
         val colors = Color.FUCHSIA.plusCompliments(10)
         update {
-            val loc  = player.location
+            val loc = player.location
             location = loc.clone().apply {
                 y += (framecount / 4.0 % 4.25) - 1
             }
             val size = when {
                 location.y > loc.y + 2 -> 1 - (location.y - (loc.y + 2.0))
-                location.y < loc.y     -> 1 - (loc.y - location.y)
-                else                   -> 1.0
+                location.y < loc.y -> 1 - (loc.y - location.y)
+                else -> 1.0
             }
             circle(
-                vertexes = 15,
-                size     = size
+                    vertexes = 15,
+                    size = size
             ) { (v) ->
                 location(v.rotateY(time / 250.0).apply {
                     if (player.isGliding) {
@@ -395,5 +396,28 @@ fun rainbowCrystal(player: Player) {
             }
         }
         cancel { !player.isOnline }
+    }
+}
+
+fun skyDolphins(player: Player) {
+    // SKY DOLPHINS
+    shader {
+        location = player.location.add(Vector(0, 30, 0))
+        val dolphin = entity<Dolphin>(point) {
+            removeWhenFarAway = false
+            potion(PotionEffectType.WATER_BREATHING) {
+                duration = Int.MAX_VALUE
+                particles = false
+            }
+        } ?: return@shader
+        update {
+            dolphin.velocity = dolphin.location.direction.divide(10.vec)
+            every(20) {
+                Circle(dolphin.location, Particle.END_ROD, size = 2.5, vertexes = 50) {
+                    extra(0.0)
+                }
+            }
+        }
+        cancel { !dolphin.isValid }
     }
 }
