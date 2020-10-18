@@ -1,20 +1,15 @@
 package xyz.atrius.shadercube.shape
 
-import com.destroystokyo.paper.ParticleBuilder
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.util.Vector
 import xyz.atrius.shadercube.Spatial
+import xyz.atrius.shadercube.data.Coordinate
+import xyz.atrius.shadercube.data.Data
+import xyz.atrius.shadercube.data.Stylable
+import xyz.atrius.shadercube.data.Updatable
 
-typealias Style<T> =
-    ParticleBuilder.(Data<T>) -> Unit
-
-data class Data<T>(
-    val vector: Vector,
-    val data  : T
-)
-
-interface Shape<T : Shape<T>> : Spatial {
+interface Shape<T> : Spatial, Updatable, Stylable<T> {
 
     var particle: Particle
 
@@ -23,11 +18,20 @@ interface Shape<T : Shape<T>> : Spatial {
 
     val size: Vector
 
-    val points: Array<Vector>
+    val vertices: Array<Coordinate>
+        get() = vertexes()
 
-    val block: Style<T>
+    val instance: T
 
-    fun rotate(x: Double, y: Double, z: Double) = points.forEach {
+    fun rotate(x: Double, y: Double, z: Double) = vertices.forEach {
         it.rotateX(x).rotateY(y).rotateZ(z)
     }
+
+    override fun update() = vertices.forEach {
+        particle(particle, it) {
+            style(Data(Coordinate(point, it), instance))
+        }
+    }
+
+    fun vertexes(): Array<Coordinate>
 }
