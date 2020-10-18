@@ -36,8 +36,4 @@ fun Shader.hologram(
     hologram(point.subtract(Vector(0.0, space, 0.0)), it, removeAfter)
 }.toTypedArray()
 
-fun Hologram.hologram(text: String) {
-    customName = text
-}
-
 fun MultilineHologram.remove() = forEach { it.remove() }
