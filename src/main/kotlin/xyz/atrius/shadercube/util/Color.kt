@@ -1,5 +1,6 @@
 package xyz.atrius.shadercube.util
 
+import net.md_5.bungee.api.ChatColor
 import org.bukkit.Color
 import java.awt.Color.HSBtoRGB
 import java.awt.Color.RGBtoHSB
@@ -96,3 +97,6 @@ fun Color.blend(other: Color, amount: Double = 1.0, mode: BlendFunction): Color 
 
 private fun standardizeAndCalc(red: Int, r: Int, amount: Double, mode: BlendFunction): Int =
     (clamp(0.0, 1.0, lerp(red.toDouble(), mode(red / 255.0, r / 255.0), amount)) * 255).toInt()
+
+val Color.chat: ChatColor
+    get() = ChatColor.of(java.awt.Color(this.asRGB()))
