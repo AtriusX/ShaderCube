@@ -33,6 +33,8 @@ open class Shader protected constructor(): Spatial {
 
     var update: Update? = null
 
+    var finish: Update? = null
+
     open var cancel: Cancel = { false }
 
     fun update(vararg objects: Updatable, block: Update) {
@@ -42,17 +44,24 @@ open class Shader protected constructor(): Spatial {
 
     protected fun update(rate: Long = 0) {
         taskId = schedule.scheduleSyncRepeatingTask(plugin, {
-            if (cancel())
+            if (cancel()) {
                 schedule.cancelTask(taskId)
+                finish?.invoke(this)
+            }
             try {
                 update?.invoke(this)
             } catch(e: Exception) {
                 Bukkit.getLogger().warning(e.message)
                 schedule.cancelTask(taskId)
+                finish?.invoke(this)
             }
             objects.forEach(Updatable::update)
             framecount++
         }, 0L, rate)
+    }
+
+    fun finish(block: Update) {
+        finish = block
     }
 
     fun cancel(block: Cancel) {
