@@ -3,43 +3,36 @@ package xyz.atrius.shadercube.shape
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.util.Vector
+import xyz.atrius.shadercube.data.Coordinate
+import xyz.atrius.shadercube.data.Style
 import xyz.atrius.shadercube.shader.Shader
-import xyz.atrius.shadercube.util.vec
 
 class Line(
     override var location: Location,
                  point2  : Location    = location,
     override var particle: Particle    = Particle.REDSTONE,
-                 vertexes: Int         = 100,
-    override val block   : Style<Line> = {}
+             val vertexes: Int         = 100,
+    override val style   : Style<Line> = {}
 ) : Shape<Line> {
 
     override val size: Vector = point
         .subtract(point2.toVector())
         .multiply(-1.0 / vertexes)
 
-    val midpoint: Vector = point
-        .subtract(point2.toVector())
-        .divide((-2).vec)
-
-    override val points: Array<Vector> = Array(vertexes) { point }
-
-    init {
-        val pos = location
-        for (i in points.indices) {
-            points[i] = pos.toVector()
-            particle(particle, pos) {
-                block(Data(point, this@Line))
-            }
-            pos.add(size)
+    override fun vertexes(): Array<Coordinate> {
+        val vertices = mutableListOf<Coordinate>()
+        val pos = point
+        repeat(vertexes) {
+            vertices += Coordinate(point, pos.add(size))
         }
+        return vertices.toTypedArray()
     }
 }
 
 fun Shader.line(
-    point   : Vector      = this.point,
-    point2  : Vector      = this.point,
-    particle: Particle    = Particle.REDSTONE,
-    vertexes: Int         = 100,
-    block   : Style<Line> = {}
+        point   : Vector      = this.point,
+        point2  : Vector      = this.point,
+        particle: Particle    = Particle.REDSTONE,
+        vertexes: Int         = 100,
+        block   : Style<Line> = {}
 ) = Line(point.toLocation(world), point2.toLocation(world), particle, vertexes, block)
