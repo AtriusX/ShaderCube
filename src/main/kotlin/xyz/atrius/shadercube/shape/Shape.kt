@@ -21,15 +21,14 @@ interface Shape<T> : Spatial, Updatable, Stylable<T> {
     val vertices: Array<Coordinate>
         get() = vertexes()
 
-    val instance: T
-
     fun rotate(x: Double, y: Double, z: Double) = vertices.forEach {
         it.rotateX(x).rotateY(y).rotateZ(z)
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun update() = vertices.forEach {
         particle(particle, it) {
-            style(Data(Coordinate(point, it), instance))
+            style(Data(Coordinate(point, it), this@Shape as T))
         }
     }
 
