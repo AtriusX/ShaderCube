@@ -61,13 +61,18 @@ class Text(
 }
 
 fun Shader.text(
-    point   : Vector      = this.point,
-    text    : String,
-    align   : Align       = Align.CENTER,
-    size    : Vector      = 1.vec,
-    particle: Particle    = Particle.REDSTONE,
-    block   : Style<Text> = {}
-) = Text(point.toLocation(world), text, align, size, particle, block)
+    point      : Vector      = this.point,
+    text       : String,
+    align      : Align       = Align.CENTER,
+    size       : Vector      = 1.vec,
+    lineSpacing: Double      = 1.25,
+    particle   : Particle    = Particle.REDSTONE,
+    block      : Style<Text> = {}
+) {
+    text.split("\n").forEachIndexed { i, it ->
+        Text(point.toLocation(world).subtract(0.0, (size.z * lineSpacing) * i, 0.0), it, align, size, particle, block)
+    }
+}
 
 @Suppress("unused")
 enum class Align {
