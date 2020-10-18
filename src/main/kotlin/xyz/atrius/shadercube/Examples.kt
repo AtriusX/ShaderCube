@@ -5,6 +5,7 @@ import org.bukkit.Color
 import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
+import org.bukkit.entity.Dolphin
 import org.bukkit.entity.Player
 import org.bukkit.entity.Spider
 import org.bukkit.event.player.PlayerMoveEvent
@@ -365,5 +366,29 @@ fun hsbTest(player: Player) {
             }
         }
         cancel { !player.isOnline }
+    }
+}
+
+fun skyDolphins(player: Player) {
+    // SKY DOLPHINS
+    shader {
+        location = player.location.add(Vector(0, 30, 0))
+        val dolphin = entity<Dolphin>(point) {
+            removeWhenFarAway = false
+            potion(PotionEffectType.WATER_BREATHING) {
+                duration = Int.MAX_VALUE
+                particles = false
+            }
+        } ?: return@shader
+        update {
+            dolphin.velocity = dolphin.location.direction.divide(10.vec)
+            every(20) {
+                Circle(dolphin.location, Particle.END_ROD, size = 2.5, vertexes = 50) {
+                    extra(0.0)
+                }
+            }
+            Text(location, "Hello World!", hsb(framecount / 400f, 1f, 1f))
+        }
+        cancel { !dolphin.isValid }
     }
 }
