@@ -9,6 +9,7 @@ import org.bukkit.map.MinecraftFont
 class Text(
     val location: Location,
     message : String,
+    private val color: Color
 ) {
     val data = MinecraftFont.Font
     val point = location.toVector()
@@ -27,7 +28,8 @@ class Text(
         for (y in 0 until sprite.height)
             for (x in 0 until sprite.width) {
                 if (sprite[y, x]) location.world.spawnParticle(
-                    Particle.REDSTONE, offset + location.x + x / 5f, location.y - y / 5f, 0.0, 1, Particle.DustOptions(Color.RED, 1f)
+                    Particle.REDSTONE, offset + location.x + x / 5f, location.y - y / 5f, 0.0, 1,
+                        Particle.DustOptions(color, 1f)
                 )
             }
     }
