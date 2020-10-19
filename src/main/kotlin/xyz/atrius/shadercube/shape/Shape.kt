@@ -18,18 +18,18 @@ abstract class Shape<T> : Spatial, Updatable, Stylable<T> {
 
     abstract val size: Vector
 
-    val vertices: Array<Coordinate> by lazy { vertexes() }
+    var vertices: MutableList<Coordinate> = mutableListOf()
 
     fun rotate(x: Double, y: Double, z: Double) = vertices.forEach {
         it.rotateX(x).rotateY(y).rotateZ(z)
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun update() = vertices.forEach {
+    final override fun update() = vertices.forEach {
         particle(particle, it.get()) {
             style(Data(Coordinate(point, it), this@Shape as T))
         }
     }
 
-    abstract fun vertexes(): Array<Coordinate>
+    abstract fun vertexes()
 }
