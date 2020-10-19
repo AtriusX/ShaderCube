@@ -1,6 +1,5 @@
 package xyz.atrius.shadercube.shader
 
-import org.bukkit.Bukkit
 import org.bukkit.Location
 import xyz.atrius.shadercube.Spatial
 import xyz.atrius.shadercube.data.Updatable
@@ -50,12 +49,12 @@ open class Shader protected constructor(): Spatial {
             }
             try {
                 update?.invoke(this)
+                objects.forEach(Updatable::update)
             } catch(e: Exception) {
-                Bukkit.getLogger().warning(e.message)
+                e.printStackTrace()
                 schedule.cancelTask(taskId)
                 finish?.invoke(this)
             }
-            objects.forEach(Updatable::update)
             framecount++
         }, 0L, rate)
     }
