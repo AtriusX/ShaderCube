@@ -18,7 +18,7 @@ class Square(
     private  val centered: Boolean       = true,
     private  val corners : Boolean       = false,
     override val style   : Style<Square> = {}
-) : Shape<Square> {
+) : Shape<Square>() {
 
     private val w     = size.x
     private val h     = size.z

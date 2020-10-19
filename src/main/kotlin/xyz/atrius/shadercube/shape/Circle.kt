@@ -15,7 +15,7 @@ class Circle(
     private  val radius  : Double        = 1.0,
     private  val vertexes: Int           = 32,
     override val style   : Style<Circle> = {}
-) : Shape<Circle> {
+) : Shape<Circle>() {
     override val size: Vector = radius.vec2d
 
     override fun vertexes(): Array<Coordinate> {

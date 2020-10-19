@@ -9,17 +9,16 @@ import xyz.atrius.shadercube.data.Data
 import xyz.atrius.shadercube.data.Stylable
 import xyz.atrius.shadercube.data.Updatable
 
-interface Shape<T> : Spatial, Updatable, Stylable<T> {
+abstract class Shape<T> : Spatial, Updatable, Stylable<T> {
 
-    var particle: Particle
+    abstract var particle: Particle
 
     val center: Location
         get() = location
 
-    val size: Vector
+    abstract val size: Vector
 
-    val vertices: Array<Coordinate>
-        get() = vertexes()
+    val vertices: Array<Coordinate> by lazy { vertexes() }
 
     fun rotate(x: Double, y: Double, z: Double) = vertices.forEach {
         it.rotateX(x).rotateY(y).rotateZ(z)
@@ -27,10 +26,10 @@ interface Shape<T> : Spatial, Updatable, Stylable<T> {
 
     @Suppress("UNCHECKED_CAST")
     override fun update() = vertices.forEach {
-        particle(particle, it) {
+        particle(particle, it.get()) {
             style(Data(Coordinate(point, it), this@Shape as T))
         }
     }
 
-    fun vertexes(): Array<Coordinate>
+    abstract fun vertexes(): Array<Coordinate>
 }

@@ -7,13 +7,13 @@ import xyz.atrius.shadercube.data.Coordinate
 import xyz.atrius.shadercube.data.Style
 import xyz.atrius.shadercube.shader.Shader
 
-class Line(
+open class Line(
     override var location: Location,
                  point2  : Location    = location,
     override var particle: Particle    = Particle.REDSTONE,
              val vertexes: Int         = 100,
     override val style   : Style<Line> = {}
-) : Shape<Line> {
+) : Shape<Line>() {
 
     override val size: Vector = point
         .subtract(point2.toVector())
