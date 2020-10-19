@@ -35,10 +35,11 @@ class ShaderCube : KotlinPlugin(), Listener {
         shader {
             location = player.location
             update {
-                text(point, text, size = 0.3.vec) { (v, t) ->
+                text(point, text, size = 0.3.vec) { (v) ->
                     location(v
-                        .rotateX((-player.location.pitch.toDouble()).radians, center = t.point)
-                        .rotateY((180 - player.location.yaw.toDouble()).radians))
+                        .rotateAroundX((-player.location.pitch.toDouble()).radians)
+                        .rotateAroundY((180 - player.location.yaw.toDouble()).radians)
+                    )
                     color(hsb(framecount / 400f, 1f, 1f), 0.3f)
                 }
             }
