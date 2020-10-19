@@ -30,19 +30,16 @@ class Coordinate(
     infix fun centerOn(location: Location): Coordinate =
         centerOn(location.toVector())
 
-    override infix fun rotateAroundX(angle: Double): Vector {
+    override infix fun rotateAroundX(angle: Double): Coordinate = also {
         relative.rotateAroundX(angle)
-        return get()
     }
 
-    override infix fun rotateAroundY(angle: Double): Vector {
+    override infix fun rotateAroundY(angle: Double): Coordinate = also {
         relative.rotateAroundY(angle)
-        return get()
     }
 
-    override infix fun rotateAroundZ(angle: Double): Vector {
+    override infix fun rotateAroundZ(angle: Double): Coordinate = also {
         relative.rotateAroundZ(angle)
-        return get()
     }
 
     fun get(): Vector =
