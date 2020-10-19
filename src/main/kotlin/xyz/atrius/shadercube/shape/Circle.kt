@@ -18,13 +18,25 @@ class Circle(
 ) : Shape<Circle>() {
     override val size: Vector = radius.vec2d
 
-    override fun vertexes(): Array<Coordinate> {
-        val vertices = mutableListOf<Coordinate>()
-        val angle = (360.0 / vertexes).radians
-        repeat(vertexes) {
-            vertices += Coordinate(point, point.rotateY(angle * it, radius))
+    init {
+        vertexes()
+        update()
+    }
+
+    override fun vertexes() {
+        vertices.addAll(generate(radius, vertexes))
+    }
+
+    companion object {
+
+        fun Shape<*>.generate(radius: Double, vertexes: Int): List<Coordinate> {
+            val vertices = mutableListOf<Coordinate>()
+            val angle = (360.0 / vertexes).radians
+            repeat(vertexes) {
+                vertices.add(Coordinate(point, point.rotateY(angle * it, radius)))
+            }
+            return vertices
         }
-        return vertices.toTypedArray()
     }
 }
 
