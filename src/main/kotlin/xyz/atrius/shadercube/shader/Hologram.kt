@@ -1,7 +1,5 @@
 package xyz.atrius.shadercube.shader
 
-import net.md_5.bungee.api.ChatColor
-import org.bukkit.Color
 import org.bukkit.entity.ArmorStand
 import org.bukkit.util.Vector
 
@@ -10,9 +8,6 @@ typealias Hologram =
 
 typealias MultilineHologram =
     Array<Hologram>
-
-val Color.chat: ChatColor
-    get() = ChatColor.of(java.awt.Color(this.asRGB()))
 
 fun Shader.hologram(
     point      : Vector = this.point,

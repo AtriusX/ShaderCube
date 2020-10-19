@@ -4,7 +4,6 @@ import org.bukkit.Location
 import org.bukkit.util.Vector
 import xyz.atrius.shadercube.Spatial
 import xyz.atrius.shadercube.shader.Shader
-import xyz.atrius.shadercube.shape.Data
 import xyz.atrius.shadercube.util.radians
 
 typealias OrbitData =
@@ -19,8 +18,8 @@ class Orbit(
 
     var offset: Double = 0.0
 
-    override fun update() = block(Data(point.clone()
-        .rotateY(((System.currentTimeMillis() / 10) * rate + offset).radians, size), this)
+    override fun update() = block(Data(Coordinate(point, point.clone()
+        .rotateY(((System.currentTimeMillis() / 10) * rate + offset).radians, size)), this)
     )
 
     operator fun plusAssign(amt: Int) =

@@ -1,6 +1,5 @@
 package xyz.atrius.shadercube.shader
 
-import org.bukkit.Bukkit
 import org.bukkit.Location
 import xyz.atrius.shadercube.Spatial
 import xyz.atrius.shadercube.data.Updatable
@@ -37,7 +36,7 @@ open class Shader protected constructor(): Spatial {
 
     open var cancel: Cancel = { false }
 
-    fun update(vararg objects: Updatable, block: Update) {
+    fun update(vararg objects: Updatable, block: Update? = null) {
         this.objects = objects
         update = block
     }
@@ -50,12 +49,12 @@ open class Shader protected constructor(): Spatial {
             }
             try {
                 update?.invoke(this)
+                objects.forEach(Updatable::update)
             } catch(e: Exception) {
-                Bukkit.getLogger().warning(e.message)
+                e.printStackTrace()
                 schedule.cancelTask(taskId)
                 finish?.invoke(this)
             }
-            objects.forEach(Updatable::update)
             framecount++
         }, 0L, rate)
     }
@@ -74,12 +73,13 @@ open class Shader protected constructor(): Spatial {
 
     companion object {
 
-        internal fun start(rate: Long, shader: Shader.() -> Unit) = Shader().apply {
+        internal fun start(location: Location?, rate: Long, shader: Shader.() -> Unit) = Shader().apply {
+            location?.let { this.location = it }
             shader(this) // Construct the shader script
             update(rate) // Update the shader at the given rate
         }
     }
 }
 
-fun shader(rate: Long = 0, shader: Update) =
-    Shader.start(rate, shader)
+fun shader(location: Location? = null, rate: Long = 0, shader: Update) =
+    Shader.start(location, rate, shader)

@@ -34,14 +34,18 @@ class ShaderCube : KotlinPlugin(), Listener {
         """.trimMargin()
         shader {
             location = player.location
-            update {
-                text(point, text, size = 0.3.vec) { (v, t) ->
-                    location(v
-                        .rotateX((-player.location.pitch.toDouble()).radians, center = t.point)
-                        .rotateY((180 - player.location.yaw.toDouble()).radians))
-                    color(hsb(framecount / 400f, 1f, 1f), 0.3f)
-                }
+            val txt  = text(
+                text = text,
+                size = 0.3.vec
+            ) { (v) ->
+                v.center = player.location.toVector()
+                location(v
+                    .rotateAroundX((-player.location.pitch.toDouble()).radians)
+                    .rotateAroundY((180 - player.location.yaw.toDouble()).radians)
+                )
+                color(hsb(framecount / 400f, 1f, 1f), 0.3f)
             }
+            update(*txt)
         }
     }
 }

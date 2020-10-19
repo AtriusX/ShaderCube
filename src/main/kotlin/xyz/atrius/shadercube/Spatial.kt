@@ -5,6 +5,7 @@ import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.World
 import org.bukkit.util.Vector
+import xyz.atrius.shadercube.data.Coordinate
 
 interface Spatial {
 
@@ -39,6 +40,9 @@ interface Spatial {
 
     fun particle(particle: Particle = Particle.REDSTONE, position: Vector = point, block: ParticleBuilder.() -> Unit = {}) =
         particle(particle, position.toLocation(world), block)
+
+    fun ParticleBuilder.location(coordinate: Coordinate) =
+        location(coordinate.get())
 
     fun ParticleBuilder.location(vector: Vector) =
         location(vector.toLocation(world))

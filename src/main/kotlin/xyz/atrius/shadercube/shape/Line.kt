@@ -3,43 +3,53 @@ package xyz.atrius.shadercube.shape
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.util.Vector
+import xyz.atrius.shadercube.data.Coordinate
+import xyz.atrius.shadercube.data.Style
 import xyz.atrius.shadercube.shader.Shader
-import xyz.atrius.shadercube.util.vec
 
 class Line(
     override var location: Location,
-                 point2  : Location    = location,
+    private  val point2  : Location    = location,
     override var particle: Particle    = Particle.REDSTONE,
-                 vertexes: Int         = 100,
-    override val block   : Style<Line> = {}
-) : Shape<Line> {
+             val vertexes: Int         = 100,
+    override val style   : Style<Line> = {}
+) : Shape<Line>() {
 
-    override val size: Vector = point
-        .subtract(point2.toVector())
-        .multiply(-1.0 / vertexes)
+    override val size: Vector = getDirection(point, point2.toVector(), vertexes)
 
-    val midpoint: Vector = point
-        .subtract(point2.toVector())
-        .divide((-2).vec)
-
-    override val points: Array<Vector> = Array(vertexes) { point }
+    val midpoint: Vector =
+        location.toVector().midpoint(point2.toVector())
 
     init {
-        val pos = location
-        for (i in points.indices) {
-            points[i] = pos.toVector()
-            particle(particle, pos) {
-                block(Data(point, this@Line))
+        vertexes()
+        update()
+    }
+
+    override fun vertexes() {
+        vertices.addAll(generate(point, point2.toVector(), vertexes))
+    }
+
+    companion object {
+
+        private fun getDirection(point: Vector, point2: Vector, vertexes: Int) = point.clone()
+            .subtract(point2).multiply(-1.0 / vertexes)
+
+        fun generate(point: Vector, point2: Vector, vertexes: Int): List<Coordinate> {
+            val vertices  = mutableListOf<Coordinate>()
+            val direction = getDirection(point, point2, vertexes)
+            val pos = point.clone()
+            repeat(vertexes) {
+                vertices.add(Coordinate(point, pos.add(direction)))
             }
-            pos.add(size)
+            return vertices
         }
     }
 }
 
 fun Shader.line(
-    point   : Vector      = this.point,
-    point2  : Vector      = this.point,
-    particle: Particle    = Particle.REDSTONE,
-    vertexes: Int         = 100,
-    block   : Style<Line> = {}
+        point   : Vector      = this.point,
+        point2  : Vector      = this.point,
+        particle: Particle    = Particle.REDSTONE,
+        vertexes: Int         = 100,
+        block   : Style<Line> = {}
 ) = Line(point.toLocation(world), point2.toLocation(world), particle, vertexes, block)
