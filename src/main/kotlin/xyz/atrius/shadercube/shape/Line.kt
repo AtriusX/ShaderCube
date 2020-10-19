@@ -19,6 +19,9 @@ class Line(
         .subtract(point2.toVector())
         .multiply(-1.0 / vertexes)
 
+    val midpoint: Vector =
+        location.toVector().midpoint(point2.toVector())
+
     override fun vertexes(): Array<Coordinate> {
         val vertices = mutableListOf<Coordinate>()
         val pos = point
