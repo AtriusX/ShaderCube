@@ -1,5 +1,6 @@
 package xyz.atrius.shadercube.data
 
+import org.bukkit.Location
 import org.bukkit.util.Vector
 
 class Coordinate(
@@ -22,17 +23,26 @@ class Coordinate(
     val relZ: Double
         get() = relative.z
 
-    override fun rotateAroundX(angle: Double): Vector = subtract(center).also {
-        super.rotateAroundX(angle).add(center)
+    infix fun centerOn(center: Vector): Coordinate = also {
+        this.center = center
     }
 
-    override fun rotateAroundY(angle: Double): Vector {
+    infix fun centerOn(location: Location): Coordinate =
+        centerOn(location.toVector())
+
+    override infix fun rotateAroundX(angle: Double): Vector {
+        relative.rotateAroundX(angle)
+        return get()
+    }
+
+    override infix fun rotateAroundY(angle: Double): Vector {
         relative.rotateAroundY(angle)
         return get()
     }
 
-    override fun rotateAroundZ(angle: Double): Vector = subtract(center).also {
-        super.rotateAroundZ(angle).add(center)
+    override infix fun rotateAroundZ(angle: Double): Vector {
+        relative.rotateAroundZ(angle)
+        return get()
     }
 
     fun get(): Vector =
