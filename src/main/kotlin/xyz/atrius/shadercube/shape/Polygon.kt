@@ -3,7 +3,6 @@ package xyz.atrius.shadercube.shape
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.util.Vector
-import xyz.atrius.shadercube.data.Coordinate
 import xyz.atrius.shadercube.data.Style
 import xyz.atrius.shadercube.shader.Shader
 import xyz.atrius.shadercube.util.radians
@@ -19,19 +18,22 @@ class Polygon(
 ) : Shape<Polygon>() {
     override val size: Vector = scale.vec2d
 
-    override fun vertexes(): Array<Coordinate> {
-        val vertices = mutableListOf<Coordinate>()
+    init {
+        vertexes()
+        update()
+    }
+
+    override fun vertexes() {
         val angle = (360.0 / faces).radians
         val temp = mutableListOf<Vector>()
         repeat(faces) {
             temp += point.rotateY(angle * it, scale)
         }
         temp.forEachIndexed { i, p ->
-            vertices += Line(
-                p.toLocation(world), temp[(i + 1) % faces].toLocation(world), particle, vertexes
-            ).vertices
+            vertices.addAll(Line.generate(
+                p, temp[(i + 1) % faces], vertexes
+            ))
         }
-        return vertices.toTypedArray()
     }
 }
 

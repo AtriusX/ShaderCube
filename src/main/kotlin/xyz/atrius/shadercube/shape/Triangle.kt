@@ -3,7 +3,6 @@ package xyz.atrius.shadercube.shape
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.util.Vector
-import xyz.atrius.shadercube.data.Coordinate
 import xyz.atrius.shadercube.data.Style
 import xyz.atrius.shadercube.shader.Shader
 
@@ -18,9 +17,12 @@ class Triangle(
 ) : Shape<Triangle>() {
     override val size: Vector = Vector(base, 0.0, height)
 
-    override fun vertexes(): Array<Coordinate> {
-        val vertices = mutableListOf<Coordinate>()
+    init {
+        vertexes()
+        update()
+    }
 
+    override fun vertexes() {
         val halfW  = base / 2
         val halfH  = height / 2
         val coords = arrayOf(
@@ -29,13 +31,10 @@ class Triangle(
             Vector(point.x + halfW - skew, point.y, point.z - halfH)
         )
         for (i in coords.indices) {
-            vertices += Line(
-                coords[i].toLocation(world),
-                coords[(i + 1) % coords.size].toLocation(world),
-                particle, vertexes
-            ).vertices
+            vertices.addAll(Line.generate(
+                coords[i], coords[(i + 1) % coords.size], vertexes
+            ))
         }
-        return vertices.toTypedArray()
     }
 }
 

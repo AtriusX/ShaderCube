@@ -3,7 +3,6 @@ package xyz.atrius.shadercube.shape
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.util.Vector
-import xyz.atrius.shadercube.data.Coordinate
 import xyz.atrius.shadercube.data.Style
 import xyz.atrius.shadercube.shader.Shader
 import xyz.atrius.shadercube.util.radians
@@ -21,20 +20,23 @@ class Star(
 
     override val size: Vector = scale.vec2d
 
-    override fun vertexes(): Array<Coordinate> {
-        val vertices = mutableListOf<Coordinate>()
-        val angle    = (360.0 / points).radians
-        val temp     = mutableListOf<Vector>()
+    init {
+        vertexes()
+        update()
+    }
+
+    override fun vertexes() {
+        val angle = (360.0 / points).radians
+        val temp  = mutableListOf<Vector>()
         repeat(points) {
             temp += point.rotateY(angle * it, scale)
         }
         temp.forEachIndexed { i, v ->
             val jumpIndex = (i + jump) % points
-            vertices += Line(
-                v.toLocation(world), temp[jumpIndex].toLocation(world), particle, vertexes
-            ).vertices
+            vertices.addAll(Line.generate(
+                v, temp[jumpIndex], vertexes
+            ))
         }
-        return vertices.toTypedArray()
     }
 }
 

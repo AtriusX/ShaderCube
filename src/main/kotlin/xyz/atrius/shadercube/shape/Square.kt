@@ -25,14 +25,17 @@ class Square(
     private val wSize = (w * step).toInt()
     private val hSize = (h * step).toInt()
 
-    override fun vertexes(): Array<Coordinate> {
-        val vertices = mutableListOf<Coordinate>()
+    init {
+        vertexes()
+        update()
+    }
+
+    override fun vertexes() {
         for((x, z) in range(wSize) to range(hSize)) if (!hollow || isEdge(x, z)) {
-            vertices += Coordinate(point, Vector(
+            vertices.add(Coordinate(point, Vector(
                 adjust(point.x, x.toDouble(), w), point.y, adjust(point.z, z.toDouble(), h)
-            ))
+            )))
         }
-        return vertices.toTypedArray()
     }
 
     private fun range(size: Int): IntProgression =

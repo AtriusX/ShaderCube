@@ -35,14 +35,17 @@ class Text(
         if (align == Align.CENTER) base / 2 else base
     } else 0.0
 
-    override fun vertexes(): Array<Coordinate> {
-        val vertices = mutableListOf<Coordinate>()
+    init {
+        vertexes()
+        update()
+    }
+
+    override fun vertexes() {
         var offset = 0.0
         sprites.forEach { (s, w) ->
-            vertices += render(s, offset - baseOffset)
+            vertices.addAll(render(s, offset - baseOffset))
             offset += w
         }
-        return vertices.toTypedArray()
     }
 
     private fun render(sprite: Sprite, offset: Double): List<Coordinate> {
