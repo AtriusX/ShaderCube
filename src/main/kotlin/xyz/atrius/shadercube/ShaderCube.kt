@@ -38,7 +38,6 @@ class ShaderCube : KotlinPlugin(), Listener {
                 text = text,
                 size = 0.3.vec
             ) { (v) ->
-                v.center = player.location.toVector()
                 location(v
                     .rotateAroundX((-player.location.pitch.toDouble()).radians)
                     .rotateAroundY((180 - player.location.yaw.toDouble()).radians)
@@ -46,6 +45,8 @@ class ShaderCube : KotlinPlugin(), Listener {
                 color(hsb(framecount / 400f, 1f, 1f), 0.3f)
             }
             update(*txt)
+
+            cancel { !player.isOnline }
         }
     }
 }
