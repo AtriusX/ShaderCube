@@ -3,7 +3,7 @@ package xyz.atrius.shadercube.shape
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.util.Vector
-import xyz.atrius.shadercube.Spatial
+import xyz.atrius.shadercube.data.Spatial
 import xyz.atrius.shadercube.data.Coordinate
 import xyz.atrius.shadercube.data.Data
 import xyz.atrius.shadercube.data.Stylable

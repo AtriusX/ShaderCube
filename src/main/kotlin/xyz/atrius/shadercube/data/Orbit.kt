@@ -3,7 +3,6 @@ package xyz.atrius.shadercube.data
 
 import org.bukkit.Location
 import org.bukkit.util.Vector
-import xyz.atrius.shadercube.Spatial
 import xyz.atrius.shadercube.shader.Shader
 import xyz.atrius.shadercube.util.radians
 

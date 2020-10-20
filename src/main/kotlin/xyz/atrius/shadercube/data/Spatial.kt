@@ -1,11 +1,10 @@
-package xyz.atrius.shadercube
+package xyz.atrius.shadercube.data
 
 import com.destroystokyo.paper.ParticleBuilder
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.World
 import org.bukkit.util.Vector
-import xyz.atrius.shadercube.data.Coordinate
 
 interface Spatial {
 
