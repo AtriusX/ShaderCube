@@ -24,7 +24,7 @@ import org.bukkit.util.Vector
  * @param    worldZ The absolute Z position of the relative point. [Center][center] is subtracted
  *                  from this to produce the [relative] offset.
  *
- * @see Vector For information on any of the underlying methods supported in this class.
+ * @see Vector
  */
 class Coordinate(
     var center: Vector,
@@ -42,7 +42,7 @@ class Coordinate(
      * @param relative The absolute position of the relative point. [Center][center] is subtracted
      *                 from this to produce the [relative] offset.
      *
-     * @see Coordinate For full rundown of this class.
+     * @see Coordinate
      */
     constructor(center: Vector, relative: Vector) : this(center, relative.x, relative.y, relative.z)
 
