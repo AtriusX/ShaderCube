@@ -31,7 +31,7 @@ class Animation private constructor(
             field = { endAnimation || value() }
         }
 
-    companion object {
+    internal companion object {
 
         internal fun start(rate: Long, frames: Int, shader: Animation.() -> Unit) = Animation(frames).apply {
             shader(this) // Construct the shader script

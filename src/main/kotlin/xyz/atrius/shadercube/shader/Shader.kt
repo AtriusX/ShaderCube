@@ -71,7 +71,7 @@ open class Shader protected constructor(): Spatial {
         if (framecount % frames == 0 && framecount != 0) block(this)
     }
 
-    companion object {
+    internal companion object {
 
         internal fun start(location: Location?, rate: Long, shader: Shader.() -> Unit) = Shader().apply {
             location?.let { this.location = it }
