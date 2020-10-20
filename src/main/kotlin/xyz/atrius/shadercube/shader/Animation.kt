@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package xyz.atrius.shadercube.shader
 
 /**

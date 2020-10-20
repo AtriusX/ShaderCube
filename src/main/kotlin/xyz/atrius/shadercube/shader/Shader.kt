@@ -1,7 +1,7 @@
 package xyz.atrius.shadercube.shader
 
 import org.bukkit.Location
-import xyz.atrius.shadercube.Spatial
+import xyz.atrius.shadercube.data.Spatial
 import xyz.atrius.shadercube.data.Updatable
 import xyz.atrius.shadercube.util.plugin
 import xyz.atrius.shadercube.util.schedule
