@@ -30,6 +30,8 @@ typealias OrbitData =
  * @property size     The distance away from the center point that the orbit sits at.
  * @property rate     The speed at which the orbit rotates around the center at.
  * @property block    The [OrbitData] function to run each time the orbit gets updated.
+ *
+ * @see Coordinate
  */
 class Orbit(
     override var location: Location,

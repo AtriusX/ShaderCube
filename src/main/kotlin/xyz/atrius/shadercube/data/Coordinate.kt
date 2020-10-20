@@ -8,10 +8,8 @@ import org.bukkit.util.Vector
  * Coordinates are a [Vector]-based data type that are used internally within Shadercube for the
  * purpose of preserving both world-aligned vectors as well as a center/relative vector pair. This
  * allows users to apply transformations to the underlying vector seamlessly without the need to
- * apply confusing mathematics or boilerplate.
- *
- * At any point the underlying center and relative vectors can be adjusted independently of one
- * another to accomplish different purposes.
+ * apply confusing mathematics or boilerplate. At any point the underlying center and relative
+ * vectors can be adjusted independently of one another to accomplish different purposes.
  *
  * @constructor Constructs an instance of [Coordinate] with underlying [Vector] data.
  *
