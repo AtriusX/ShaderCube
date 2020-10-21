@@ -9,6 +9,22 @@ import xyz.atrius.shadercube.shape.Circle.Companion.generate
 import xyz.atrius.shadercube.util.radians
 import xyz.atrius.shadercube.util.vec
 
+/**
+ * This is a shape implementation for generating spheres within shader scripts.
+ * This shape relies on the [circle generation][Circle.generate] algorithm
+ * for its processing.
+ *
+ * @constructor       Generates a sphere shape.
+ * @property location The location this shape is generated at.
+ * @property particle The particle used in this shape's update cycle.
+ * @property scale    The size at which the polygon is generated at.
+ * @property rings    The number of rings that this shape is generated with.
+ * @property segments The number of vertices to generate for each ring.
+ * @property style    The style block associated with this shape.
+ *
+ * @see Shape
+ * @see Circle.generate
+ */
 class Sphere(
     override var location: Location,
     override var particle: Particle      = Particle.REDSTONE,
@@ -36,11 +52,23 @@ class Sphere(
     }
 }
 
+/**
+ * A small DSL function for generating spheres within shader scripts.
+ *
+ * @property point    The location this shape is generated at.
+ * @property particle The particle used in this shape's update cycle.
+ * @property scale    The size at which the polygon is generated at.
+ * @property rings    The number of rings that this shape is generated with.
+ * @property segments The number of vertices to generate for each ring.
+ * @property block    The style block associated with this shape.
+ *
+ * @see Sphere
+ */
 fun Shader.sphere(
     point   : Vector        = this.point,
     particle: Particle      = Particle.REDSTONE,
-    size    : Double        = 1.0,
+    scale   : Double        = 1.0,
     rings   : Int           = 16,
     segments: Int           = 32,
     block   : Style<Sphere> = {}
-) = Sphere(point.toLocation(world), particle, size, rings, segments, block)
+) = Sphere(point.toLocation(world), particle, scale, rings, segments, block)

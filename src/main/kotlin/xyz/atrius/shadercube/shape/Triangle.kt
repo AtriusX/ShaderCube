@@ -6,6 +6,23 @@ import org.bukkit.util.Vector
 import xyz.atrius.shadercube.data.Style
 import xyz.atrius.shadercube.shader.Shader
 
+/**
+ * This is a shape implementation for generating triangles within a shader script.
+ * This shape relies on the [line generation][Line.generate] algorithm for its
+ * processing.
+ *
+ * @constructor       Generate a star shape.
+ * @property location The location this shape is generated at.
+ * @property particle The particle used in this shape's update cycle.
+ * @property base     The size of the base of the triangle.
+ * @property height   The overall height of the triangle.
+ * @property skew     The amount of skew applied to the top of the triangle.
+ * @property vertexes The number of vertexes to generate for each side.
+ * @property style    The style block associated with this shape.
+ *
+ * @see Shape
+ * @see Line.generate
+ */
 class Triangle(
     override var location: Location,
     override var particle: Particle        = Particle.REDSTONE,
@@ -38,6 +55,19 @@ class Triangle(
     }
 }
 
+/**
+ * A small DSL function for generating triangles within shader scripts.
+ *
+ * @property point    The location this shape is generated at.
+ * @property particle The particle used in this shape's update cycle.
+ * @property base     The size of the base of the triangle.
+ * @property height   The overall height of the triangle.
+ * @property skew     The amount of skew applied to the top of the triangle.
+ * @property vertexes The number of vertexes to generate for each side.
+ * @property block    The style block associated with this shape.
+ *
+ * @see Triangle
+ */
 fun Shader.triangle(
     point   : Vector          = this.point,
     particle: Particle        = Particle.REDSTONE,
