@@ -100,6 +100,7 @@ class Text(
  *                    controls height. Y is ignored.
  * @property particle The particle for which this object will use during rendering cycles.
  * @property block    The style applied to this object.
+ * @return            An array of all generated text objects.
  *
  * @see Text
  */
