@@ -9,8 +9,8 @@ import xyz.atrius.shadercube.util.radians
 import xyz.atrius.shadercube.util.vec2d
 
 /**
- * This is a shape implementation for generating polygons of any number within of sides
- * within shader scripts. This shape relies on the [line generation][Line.Companion.generate]
+ * This is a shape implementation for generating polygons of any number of sides within
+ * shader scripts. This shape relies on the [line generation][Line.Companion.generate]
  * algorithm for its processing.
  *
  * @constructor       Generates an N-sided polygon.

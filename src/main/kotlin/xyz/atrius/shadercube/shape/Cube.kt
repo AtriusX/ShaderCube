@@ -9,8 +9,8 @@ import xyz.atrius.shadercube.util.vec
 
 /**
  * This is a shape implementation for generating cubes or prisms within shader
- * scripts. This shape relies on the [line generation][Line.Companion.generate]
- * algorithm for its processing.
+ * scripts. This shape relies on the [line generation][Line.generate] algorithm
+ * for its processing.
  *
  * @constructor        Generates a cube shape.
  * @property location  The location this shape is generated at.
@@ -22,7 +22,7 @@ import xyz.atrius.shadercube.util.vec
  * @property style     The style block associated with this shape.
  *
  * @see Shape
- * @see Line.Companion.generate
+ * @see Line.generate
  */
 class Cube(
     override var location : Location,

@@ -9,6 +9,22 @@ import xyz.atrius.shadercube.shader.Shader
 import xyz.atrius.shadercube.util.iterator
 import xyz.atrius.shadercube.util.vec2d
 
+/**
+ * This is a shape implementation for generating cubes or prisms within shader
+ * scripts.
+ *
+ * @constructor       Generates a square shape.
+ * @property location The location this shape is generated at.
+ * @property particle The particle used in this shape's update cycle.
+ * @property size     The dimensions of the square.
+ * @property step     The number of vertexes to generate for each edge.
+ * @property hollow   Whether or not the square generates vertices inside the shape.
+ * @property centered Whether or not the square is centered on its location.
+ * @property corners  Whether this square generates only as corners.
+ * @property style    The style block associated with this shape.
+ *
+ * @see Shape
+ */
 class Square(
     override var location: Location,
     override var particle: Particle      = Particle.REDSTONE,
@@ -48,13 +64,28 @@ class Square(
         value + other / step - if (centered) size / 2 else 0.0
 }
 
+/**
+ * A simple DSL function for generating squares within shader scripts.
+ *
+ * @constructor       Generates a square shape.
+ * @property point    The location this shape is generated at.
+ * @property particle The particle used in this shape's update cycle.
+ * @property size     The dimensions of the square.
+ * @property step     The number of vertexes to generate for each edge.
+ * @property hollow   Whether or not the square generates vertices inside the shape.
+ * @property centered Whether or not the square is centered on its location.
+ * @property corners  Whether this square generates only as corners.
+ * @property block    The style block associated with this shape.
+ *
+ * @see Square
+ */
 fun Shader.square(
     point   : Vector        = this.point,
     particle: Particle      = Particle.REDSTONE,
     size    : Vector        = 1.vec2d,
     step    : Int           = 5,
     hollow  : Boolean       = true,
-    center  : Boolean       = true,
+    centered: Boolean       = true,
     corners : Boolean       = false,
     block   : Style<Square> = {}
-) = Square(point.toLocation(world), particle, size, step, hollow, center, corners, block)
+) = Square(point.toLocation(world), particle, size, step, hollow, centered, corners, block)

@@ -45,7 +45,6 @@ class Text(
     override var particle: Particle    = Particle.REDSTONE,
     override val style   : Style<Text> = {}
 ): Shape<Text>() {
-
     private val data    = MinecraftFont.Font
     private val sprites = if (data.isValid(text)) text
         .mapNotNull { data.getChar(it) }
