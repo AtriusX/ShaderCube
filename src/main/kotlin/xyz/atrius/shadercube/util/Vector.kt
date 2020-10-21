@@ -2,6 +2,7 @@
 package xyz.atrius.shadercube.util
 
 import org.bukkit.util.Vector
+import kotlin.math.abs
 import kotlin.math.sign
 
 /**
@@ -70,3 +71,14 @@ val Double.vec2d: Vector
  */
 val Int.vec2d: Vector
     get() = toDouble().vec2d
+
+/**
+ * Simple helper function which converts a vector into an absolute
+ * value vector.
+ *
+ * @param vector The vector to convert.
+ * @return       The resulting absolute vector.
+ */
+fun abs(vector: Vector): Vector = Vector(
+    abs(vector.x), abs(vector.y), abs(vector.z)
+)
